@@ -12,6 +12,9 @@
 % Clear command window
 clc
 
+
+%Terrence was here
+
 % Add all necessary paths
 PTKAddPaths;
 
