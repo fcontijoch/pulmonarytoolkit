@@ -12,3 +12,6 @@ dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 lobes = dataset.GetResult('PTKLobes');
 %%
 PTKViewer(lobes);
+
+%%
+PTKSaveAs(lobes, 'Patient Name', '/Users/fcontijoch/Documents/UCSD/Images/PCTA/CTEPH_0008/',true);
