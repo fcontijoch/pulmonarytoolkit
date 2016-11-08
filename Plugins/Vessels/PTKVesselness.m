@@ -83,7 +83,7 @@ classdef PTKVesselness < PTKPlugin
             
             reporting.PushProgress;
             
-            sigma_range = 0.5 : 0.5: 2;
+            sigma_range = 0.5 : 0.5: 20;
             num_calculations = numel(sigma_range);
             vesselness = [];
             progress_index = 0;
