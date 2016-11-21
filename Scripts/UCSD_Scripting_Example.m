@@ -3,9 +3,14 @@ PTKAddPaths;
 %%
 ptk_main = PTKMain;
 
+source_path = ['/Users/Pranav/Documents/CTEPH_DATASETS/CTEPH_0008/orig_imgs', '/Users/Pranav/Documents/CTEPH_DATASETS/CTEPH_0008/orig_imgs'
+
 source_path = '/Users/Pranav/Documents/CTEPH_DATASETS/CTEPH_0008/orig_imgs';
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
 % Tutorial 3 says PTKDiskUtilities which is incorrect
+
+% Please remove cache when re-running results
+dataset.DeleteCacheForThisDataset;
 
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 %%
