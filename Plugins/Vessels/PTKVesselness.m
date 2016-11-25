@@ -65,9 +65,9 @@ classdef PTKVesselness < PTKPlugin
             results = PTKCombineLeftAndRightImages(dataset.GetTemplateImage(PTKContext.LungROI), vesselness_left, vesselness_right, left_and_right_lungs);
             
             lung = dataset.GetResult('PTKLeftAndRightLungs');
-            %%results.ChangeRawImage(results.RawImage.*single(lung.RawImage > 0));
+            results.ChangeRawImage(results.RawImage.*single(lung.RawImage > 0));
             % Pranav removing the lung ROI
-            results.ChangeRawImage(results.RawImage);
+            %results.ChangeRawImage(results.RawImage);
             results.ImageType = PTKImageType.Scaled;
         end
         
