@@ -5,22 +5,40 @@ ptk_main = PTKMain;
 source_path = '/Users/Pranav/Documents/CTEPH_DATASETS/CTEPH_0010/orig_imgs';
 source_path2 = 'C:\Users\Jacqueline\Dropbox\CTEPH\MATLAB code\Datasets\CTEPH_0008\97272748\03713398';
 source_path3 = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
+source_path = '/Users/fcontijoch/Documents/UCSD/Images/PCTA/Bpa_201701/orig_imgs';
 
 %%
 %IMPORTANT! READ THIS: Please remove cache when re-running results
-%dataset.DeleteCacheForThisDataset;
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
 % Tutorial 3 says PTKDiskUtilities which is incorrect
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
-dataset = ptk_main.CreateDatasetFromInfo(file_infos);
+%dataset = ptk_main.CreateDatasetFromInfo(file_infos);
+dataset.DeleteCacheForThisDataset;
 %% Segmentations
 %lobes = dataset.GetResult('PTKLobes');
 lungs = dataset.GetResult('PTKLeftAndRightLungs');
 vessels = dataset.GetResult('PTKVesselness');
 vessels2 = dataset.GetResult('PTKVesselnessDilated');
 
-%% Reporter
+%%
+dataset.ClearCacheForThisDataset(false);
+
+clc
+vesselsWhole = dataset.GetResult('PTKVesselnessWhole');
+vesselsDilated = dataset.GetResult('PTKVesselnessDilated');
+
+
+clc
+
+% Reporter
 reporting = ptk_main.ReportingWithCache;
+dir_files='/Users/fcontijoch/Documents/UCSD/Images/PCTA/Bpa_201701/ptk_vessels10A';
+mkdir(dir_files);
+PTKSaveImageAsDicom(vesselsWhole,dir_files, 'vessels', 'BPA201701 Vessels 10A', true, reporting)
+
+dir_files='/Users/fcontijoch/Documents/UCSD/Images/PCTA/Bpa_201701/ptk_vessels10B';
+mkdir(dir_files);
+PTKSaveImageAsDicom(vesselsDilated,dir_files, 'vessels', 'BPA201701 Vessels 10B', true, reporting)
 %%
 
 %PTKVisualiseIn3D([],lungs,4,false,reporting);
@@ -35,8 +53,15 @@ reporting = ptk_main.ReportingWithCache;
 %%
 PTKViewer(lungs);
 %%
-PTKViewer(vessels2);
+PTKViewer(vesselsDilated);
 
+%%
+PTKSaveImageAsDicom(vesselsWhole,'/Users/fcontijoch/Documents/UCSD/Images/PCTA/Bpa_201701/ptk_vessels2', 'vessels', 'BPA201701', true, reporting)
+%%
+dir_files='/Users/fcontijoch/Documents/UCSD/Images/PCTA/Bpa_201701/ptk_vessels10C';
+mkdir(dir_files);
+
+PTKSaveAs(vesselsDilated,'Patient Name',dir_files, 0, reporting)
 %%
 %when saving use filter index 0. 
 PTKSaveAs(lungs, 'Patient Name', '/Users/Pranav/Documents/CTEPH_DATASETS/CTEPH_0010/',0,reporting);
