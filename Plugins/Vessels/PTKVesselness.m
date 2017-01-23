@@ -9,7 +9,7 @@ classdef PTKVesselness < PTKPlugin
     %
     %     PTKVesselness computes a mutiscale vesselness filter based on Frangi et
     %     al., 1998. "Multiscale Vessel Enhancement Filtering". The filter
-    %     returns a value at each point which in some sense representes the
+    %     returns a value at each point which in some sense represents the
     %     probability of that point belonging to a blood vessel.
     %
     %     To reduce memory usage, the left and right lungs are filtered
