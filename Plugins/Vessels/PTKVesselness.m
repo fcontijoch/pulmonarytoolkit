@@ -9,7 +9,7 @@ classdef PTKVesselness < PTKPlugin
     %
     %     PTKVesselness computes a mutiscale vesselness filter based on Frangi et
     %     al., 1998. "Multiscale Vessel Enhancement Filtering". The filter
-    %     returns a value at each point which in some sense representes the
+    %     returns a value at each point which in some sense represents the
     %     probability of that point belonging to a blood vessel.
     %
     %     To reduce memory usage, the left and right lungs are filtered
@@ -66,6 +66,8 @@ classdef PTKVesselness < PTKPlugin
             
             lung = dataset.GetResult('PTKLeftAndRightLungs');
             results.ChangeRawImage(results.RawImage.*single(lung.RawImage > 0));
+            % Pranav removing the lung ROI
+            %results.ChangeRawImage(results.RawImage);
             results.ImageType = PTKImageType.Scaled;
         end
         
@@ -83,7 +85,7 @@ classdef PTKVesselness < PTKPlugin
             
             reporting.PushProgress;
             
-            sigma_range = 0.5 : 0.5: 2;
+            sigma_range = 0.5 : 0.5: 20;
             num_calculations = numel(sigma_range);
             vesselness = [];
             progress_index = 0;

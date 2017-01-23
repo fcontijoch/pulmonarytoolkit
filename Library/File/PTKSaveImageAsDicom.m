@@ -63,6 +63,7 @@ function PTKSaveImageAsDicom(image_data, path, filename, patient_name, is_second
     if is_secondary_capture
         metadata = [];
         metadata.SeriesDescription = [PTKSoftwareInfo.DicomName ' : ' image_data.Title];
+        metadata = CopyField('SOPClassUID', metadata, original_metadata, []);
     else
         metadata = original_metadata;
         metadata = CopyField('Modality', metadata, original_metadata, image_data.Modality);

@@ -84,7 +84,7 @@ function DMSaveDicomSeries(base_filename, ordered_image, dicom_coordinates_list,
         metadata.MediaStorageSOPInstanceUID = metadata.SOPInstanceUID; % MediaStorageSOPInstanceUID must be the same as the SOPInstanceUID
         
         % Write the slice
-        status = dicomwrite(slice_data, full_filename, metadata, 'CreateMode', 'Copy');
+        status = dicomwrite(uint16(slice_data), full_filename, metadata, 'CreateMode', 'Copy');
         
         % Check the result of the writing operation
         if ~IsStatusEmpty(status)

@@ -41,6 +41,8 @@ function path_name = PTKSaveAs(image_data, patient_name, path_name, is_secondary
         image_data = image_data.Copy;
         image_data.ChangeRawImage(uint8(image_data.RawImage));
     end
+    
+    image_data.ChangeRawImage(uint8(image_data.RawImage));
 
     [filename, path_name, filter_index] = SaveImageDialogBox(path_name);
     if filter_index ~= 0

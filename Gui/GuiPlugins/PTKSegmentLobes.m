@@ -1,6 +1,6 @@
 classdef PTKSegmentLobes < PTKGuiPlugin
     % PTKSegmentLobes. Gui Plugin for activating lobe segmentation
-    %
+    %/Users/roshniravindran/pulmonarytoolkit/Gui/GuiPlugins/PTKSegmentLobes.m
     %     You should not use this class within your own code. It is intended to
     %     be used by the gui of the Pulmonary Toolkit.
     %
