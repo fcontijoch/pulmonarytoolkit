@@ -1,15 +1,16 @@
 clear; clc;
 PTKAddPaths;
 
-%% Note, until we fix this issue, please update the file path correctly for for the source_path variable, and the PTK save function calls at the bottom! Thanks -Pranav
-ptk_main = PTKMain;
-source_path = '/Macintosh HD/Users/SoftKitty/download/CARCINOMIX 2/CTTHORACO-ABDO/ARTERIELLES - 5';
+%% load dataset
+source_path = '/Users/SoftKitty/Downloads/CARCINOMIX 2/CT THORACO-ABDO/ARTERIELLES - 5';
 fprintf('source_paths \n')
 %%
 %IMPORTANT! READ THIS: Please remove cache when re-running results
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
 % Tutorial 3 says PTKDiskUtilities which is incorrect
+ptk_main = PTKMain;
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
+
 %dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 dataset.DeleteCacheForThisDataset;
 fprintf('done')
