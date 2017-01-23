@@ -84,9 +84,9 @@ classdef PTKLobesByVesselnessDensityUsingWatershed < PTKPlugin
             
             results_raw = PTKWatershedMeyerFromStartingPoints(vessel_density, airways_by_lobe);
             results_raw = max(0, results_raw);
-            results_left.ChangeRawImage(results
+            results_left.ChangeRawImage(results_raw);
             results_left.ImageType = PTKImageType.Colormap;
-        end_raw);
+        end
         
         
         function results_right = GetRightLobes(dataset, left_and_right_lungs, vessel_density, airways_by_lobe, reporting)

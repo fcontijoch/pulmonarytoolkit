@@ -49,7 +49,7 @@ PTKSaveImageAsDicom(vesselsDilated,dir_files, 'vessels', 'BPA201701 Vessels 10B'
 %%
 
 %% Trying to dilate rightlungROI and leftlungROI in order to add additional parts of lungs into the image 
-lungs = dataset.GetclResult('PTKLeftAndRightLungs');
+lungs = dataset.GetResult('PTKLeftAndRightLungs');
 rollingball= offsetstrel('ball', 5,5); 
 dilatedRightLungROI=imdilate(lungs, rollingball)
 PTKviewer(dilatedRightLungROI)
