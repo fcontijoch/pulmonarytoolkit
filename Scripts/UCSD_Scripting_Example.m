@@ -8,6 +8,10 @@ source_path = '/Users/Pranav/Documents/CTEPH_DATASETS/CTEPH_0010/orig_imgs';
 source_path2 = 'C:\Users\Jacqueline\Dropbox\CTEPH\MATLAB code\Datasets\CTEPH_0008\97272748\03713398';
 source_path3 = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
 source_path = '/Users/fcontijoch/Documents/UCSD/Images/PCTA/Bpa_201701/orig_imgs';
+<<<<<<< HEAD
+=======
+source_path4 = '\Users\terrence1995\Desktop\CT scans\CARCINOMIX';
+>>>>>>> d88207daa5f2f7bc961c008b47a4f616400935d1
 fprintf('source_paths \n')
 %%
 %IMPORTANT! READ THIS: Please remove cache when re-running results
