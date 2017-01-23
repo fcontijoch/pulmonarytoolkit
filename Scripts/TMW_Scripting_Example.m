@@ -27,9 +27,13 @@ vessels2 = dataset.GetResult('PTKVesselnessDilated');
 
 %% Trying to dilate rightlungROI and leftlungROI in order to add additional parts of lungs into the image 
 lungs = dataset.GetResult('PTKLeftAndRightLungs');
+%rollingball adds a nonflat ball-shaped structure element 
+%can also use vertical line element strel('line', 11, 90)
+
 rollingball= offsetstrel('ball', 5,5); 
-dilatedRightLungROI=imdilate(lungs, rollingball)
-PTKviewer(dilatedRightLungROI)
+%imdilate must be used on a uint8 or logical, data must be flat and 2D 
+dilatedRightLeftLungROI=imdilate(lungs, rollingball, 'dilate', Dicom)
+PTKviewer(dilatedRightLeftLungROI)
 fprintf('added more region to view \n')
 
 
