@@ -15,8 +15,8 @@ dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 %dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 dataset.DeleteCacheForThisDataset;
 %% Segmentations
-%lobes = dataset.GetResult('PTKLobes');
 lungs = dataset.GetResult('PTKLeftAndRightLungs');
+lobes = dataset.GetResult('PTKLobes');
 vessels = dataset.GetResult('PTKVesselness');
 vessels2 = dataset.GetResult('PTKVesselnessDilated');
 
@@ -26,7 +26,6 @@ dataset.ClearCacheForThisDataset(false);
 clc
 vesselsWhole = dataset.GetResult('PTKVesselnessWhole');
 vesselsDilated = dataset.GetResult('PTKVesselnessDilated');
-
 
 clc
 
