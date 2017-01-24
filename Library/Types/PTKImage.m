@@ -175,7 +175,7 @@ classdef (ConstructOnLoad = true) PTKImage < handle
                 orientation = [];
             end
         end
-
+%%
         function LoadRawImage(obj, file_path, reporting)
             % For a disk-cached image header, this loads the raw data
             
@@ -190,7 +190,10 @@ classdef (ConstructOnLoad = true) PTKImage < handle
                 end
                 
                 obj.RawImage = PTKLoadPtkRawImage(file_path, obj.CachedRawImageFilename, obj.CachedDataType, obj.CachedImageSize, obj.CachedRawImageCompression, reporting);
-                
+                %dilate image using RollingBall Method ('ball', radius,
+                %height)
+                RollingBall= offsetstrel('ball', 5,5); 
+                obj.RawImage=imdilate(obj.RawImage, rollingball)
                 
                 % Clear cached values
                 obj.CachedImageSize = [];
@@ -201,7 +204,7 @@ classdef (ConstructOnLoad = true) PTKImage < handle
                 obj.NotifyImageChangedCacheStillValid
             end
         end
-
+%%
         function header_file = CreateHeader(obj, raw_filename, compression)
             % Creates a cache header file template suitable for saving separately from pixel data
             
