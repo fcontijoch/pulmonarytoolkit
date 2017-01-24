@@ -191,6 +191,7 @@ classdef (ConstructOnLoad = true) PTKImage < handle
                 
                 obj.RawImage = PTKLoadPtkRawImage(file_path, obj.CachedRawImageFilename, obj.CachedDataType, obj.CachedImageSize, obj.CachedRawImageCompression, reporting);
                 
+                
                 % Clear cached values
                 obj.CachedImageSize = [];
                 obj.CachedDataType = [];
