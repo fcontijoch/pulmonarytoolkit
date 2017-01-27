@@ -190,8 +190,13 @@ classdef (ConstructOnLoad = true) PTKImage < handle
                 end
                 
                 obj.RawImage = PTKLoadPtkRawImage(file_path, obj.CachedRawImageFilename, obj.CachedDataType, obj.CachedImageSize, obj.CachedRawImageCompression, reporting);
+                
                 %dilate image using RollingBall Method ('ball', radius,
                 %height)
+                rollingball= strel('sphere', 5);
+                
+                obj.RawImage= imdilate(obj.RawImage, rollingball)
+                
                 
                 % Clear cached values
                 obj.CachedImageSize = [];
