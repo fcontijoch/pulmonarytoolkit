@@ -1,25 +1,19 @@
 clear; clc;
 PTKAddPaths;
-fprintf('PTKAddPath \n');
 
-%% Note, until we fix this issue, please update the file path correctly for for the source_path variable, and the PTK save function calls at the bottom! Thanks -Pranav
-ptk_main = PTKMain;
-source_path = '/Users/Pranav/Documents/CTEPH_DATASETS/CTEPH_0010/orig_imgs';
-source_path2 = 'C:\Users\Jacqueline\Dropbox\CTEPH\MATLAB code\Datasets\CTEPH_0008\97272748\03713398';
-source_path3 = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
-source_path = '/Users/fcontijoch/Documents/UCSD/Images/PCTA/Bpa_201701/orig_imgs';
-<<<<<<< HEAD
-=======
-source_path4 = '\Users\terrence1995\Desktop\CT scans\CARCINOMIX';
->>>>>>> d88207daa5f2f7bc961c008b47a4f616400935d1
+%% load dataset
+source_path = '/Users/SoftKitty/Downloads/CARCINOMIX 2/CT THORACO-ABDO/ARTERIELLES - 5';
 fprintf('source_paths \n')
 %%
 %IMPORTANT! READ THIS: Please remove cache when re-running results
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
 % Tutorial 3 says PTKDiskUtilities which is incorrect
+ptk_main = PTKMain;
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
+
 %dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 dataset.DeleteCacheForThisDataset;
+fprintf('done')
 %% Segmentations
 lungs = dataset.GetResult('PTKLeftAndRightLungs');
 lobes = dataset.GetResult('PTKLobes');

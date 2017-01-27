@@ -84,8 +84,9 @@ classdef PTKVesselness < PTKPlugin
         function vesselness = ComputeVesselness(image_data, reporting, is_left_lung)
             
             reporting.PushProgress;
-            
-            sigma_range = 0.5 : 0.5: 20;
+
+            %Roshni modified sigma_range
+            sigma_range = 3 : 0.75: 15;
             num_calculations = numel(sigma_range);
             vesselness = [];
             progress_index = 0;
