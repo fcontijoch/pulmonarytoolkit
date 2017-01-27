@@ -25,5 +25,10 @@ dataset.DeleteCacheForThisDataset;
 
 lung_notrachea = dataset.GetResult('PTKUnclosedLungExcludingTrachea');
 %%
-%visualize
+%visualize 2D
 PTKViewer(lung_notrachea);
+
+%visualize 3D
+
+
+

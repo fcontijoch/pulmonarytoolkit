@@ -23,7 +23,12 @@ dataset.DeleteCacheForThisDataset;
 %lungs = dataset.GetResult('PTKLeftAndRightLungs');
 %lobes = dataset.GetResult('PTKLobes');
 
-lung_nosurface = dataset.GetResult('function vesselness = ComputeVesselness(image_data, reporting, is_left_lung)');
+lung_notrachea = dataset.GetResult('PTKUnclosedLungExcludingTrachea');
 %%
-%visualize
-PTKViewer(lung_nosurface);
+%visualize 2D
+%PTKViewer(lung_notrachea);
+
+%visualize 3D
+PTKView3D;
+
+
