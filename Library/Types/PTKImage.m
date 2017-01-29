@@ -193,9 +193,10 @@ classdef (ConstructOnLoad = true) PTKImage < handle
                 
                 %dilate image using RollingBall Method ('ball', radius,
                 %height)
-                rollingball= strel('sphere', 5);
-                
-                obj.RawImage= imdilate(obj.RawImage, rollingball)
+                rollingball= strel('disk', 1);
+                erode=strel('disk', 1);
+                obj.RawImage= imdilate(obj.RawImage, rollingball);
+                obj.RawImage=imerode(obj.RawImage, erode);
                 
                 
                 % Clear cached values
