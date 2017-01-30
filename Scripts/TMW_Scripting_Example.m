@@ -21,15 +21,36 @@ fprintf('cache removed \n')
 %% Segmentations
 %getting data from the image set
 lungs = dataset.GetResult('PTKLeftAndRightLungs');
-lobes = dataset.GetResult('PTKLobes');
-vessels = dataset.GetResult('PTKVesselness');
-vessels2 = dataset.GetResult('PTKVesselnessDilated');
+%lobes = dataset.GetResult('PTKLobes');
+%vessels = dataset.GetResult('PTKVesselness');
+%vessels2 = dataset.GetResult('PTKVesselnessDilated');
+fprintf('data gathered \n') 
+%% original image
+radi=[1 5 10 15 20]
+for rad=1:5;
+figure(1)
+imagesc(lungs.RawImage(:,:,100))
+f1=figure(1)
+%% dilated image using sphere
+Lungs=lungs.RawImage; 
+fprintf('Lungs=lungs.RawImage \n')
+Lungs_Dilation= imdilate(Lungs, strel('sphere', radi(rad))); 
+fprintf('lungs dilated \n')
 %%
-PTKViewer(lungs)
+figure(2)
+imagesc(Lungs_Dilation(:,:,100))
+f2=figure(2)
+%% eroded image 
+Lungs_Erosion=imerode(Lungs_Dilation, strel('sphere', radi(rad)));
+fprintf('lungs eroded \n')
+%%
+figure(3)
+imagesc(Lungs_Erosion(:,:,100))
+f3=figure(3)
+fprintf('images displayed \n')
+end;
 %% Trying to dilate rightlungROI and leftlungROI in order to add additional parts of lungs into the image 
-whos 'source_path'
-whos 'lungs'
-class lungs
+
 %%
 %rollingball adds a nonflat ball-shaped structure element 
 %can also use vertical line element strel('line', 11, 90)
