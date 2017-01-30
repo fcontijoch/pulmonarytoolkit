@@ -31,19 +31,16 @@ whos 'source_path'
 whos 'lungs'
 class lungs
 %%
-image_data=input_image.RawImage
-%%
 %rollingball adds a nonflat ball-shaped structure element 
 %can also use vertical line element strel('line', 11, 90)
 %changing the data from char to logical to be used in dilation
-dicom2logical=dicomwrite(lungs, 'lungs.jpg')
-%lungslogical=logical(lungs)
-fprintf('changed lungs from char to logical \n')
+
 %%
 rollingball= offsetstrel('ball', 5,5); 
 %imdilate must be used on a uint8 or logical, data must be flat and 2D 
 dilatedRightLeftLungROI=imdilate(lungs, rollingball)
 PTKviewer(dilatedRightLeftLungROI)
+%can also use imagesc(dilatedRightLeftLungROI)
 fprintf('added more region to view \n')
 
 
