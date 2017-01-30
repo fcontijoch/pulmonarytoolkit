@@ -33,6 +33,11 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
     right_lung = PTKFillHolesInImage(right_lung);
     
     right_lung.ChangeRawImage(uint8(right_lung.RawImage));
+    %dilation of right lung using the imdilate 
+    
+    RightLungImage= right_lung.RawImage;
+    RightLungImage_Dilate=imdilate(RightLungImage, strel('ball', 12,2));
+    right_lung.ChangeRawImage(uint8(RightLungImage_Dilate));
 
     % Get the right lung volume
     right_lung_volume_mm3 = right_lung.Volume;
@@ -51,6 +56,12 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
     left_lung = PTKFillHolesInImage(left_lung);
     
     left_lung.ChangeRawImage(2*uint8(left_lung.RawImage));
+    
+%     lli = left_lung.RawImage == 2;
+%     lli_dil = imdilate(lli,strel);
+%     lli_ero = imerode(lli_dil,strel);
+%     left_lung.ChangeRawImage(2*uint8(lli_dil));
+    
     
     % Get the left lung volume
     left_lung_volume_mm3 = left_lung.Volume;
