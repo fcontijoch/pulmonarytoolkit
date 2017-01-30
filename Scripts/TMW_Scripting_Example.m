@@ -4,7 +4,7 @@ fprintf('PTKAddPath \n');
 
 %% Note, until we fix this issue, please update the file path correctly for for the source_path variable, and the PTK save function calls at the bottom! Thanks -Pranav
 ptk_main = PTKMain;
-source_path = '\Users\terrence1995\Desktop\CT scans\CARCINOMIX';
+source_path = 'C:\Users\terrence1995\Desktop\CT scans\CARCINOMIX\CT THORACO-ABDO\ARTERIELLES - 5';
 fprintf('source_paths \n')
 %%
 %IMPORTANT! READ THIS: Please remove cache when re-running results
