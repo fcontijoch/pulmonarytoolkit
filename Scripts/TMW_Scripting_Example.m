@@ -26,48 +26,34 @@ lungs = dataset.GetResult('PTKLeftAndRightLungs');
 %vessels2 = dataset.GetResult('PTKVesselnessDilated');
 fprintf('data gathered \n') 
 
-%% Original, Dilatio, and Erosion Images 
+%% Original, Dilation, and Erosion Images 
 %original image
-radii=[1 5 10 15 20 30 50];
-for rad=1:7;
+radii=[1 5 ];
+for rad=1:2;
+    tic
     figure(1);
     imagesc(lungs.RawImage(:,:,100));
     f1=figure(1);
     
-    saveas(f1,['Original_rad' num2str(radii(rad)) '.png'])
+    saveas(f1,['Original_rad' num2str(radii(rad)) '.png']);
 %dilated image using sphere
     Lungs=lungs.RawImage; 
-    fprintf('Lungs=lungs.RawImage \n')
     Lungs_Dilation= imdilate(Lungs, strel('sphere', radii(rad))); 
-    fprintf('lungs dilated at radii %f \n', radii)
+    fprintf('lungs dilated at radii %.3f \n', radii(rad))
 % figure for dilation
-    figure(2)
-    imagesc(Lungs_Dilation(:,:,100))
-    f2=figure(2)
-    saveas(f2,['Dilation_rad' num2str(radii(rad)) '.png'])
+    figure(2);
+    imagesc(Lungs_Dilation(:,:,100));
+    f2=figure(2);
+    saveas(f2,['Dilation_rad' num2str(radii(rad)) '.png']);
 % eroded image 
     Lungs_Erosion=imerode(Lungs_Dilation, strel('sphere', radii(rad)));
-    fprintf('lungs eroded at radii %f \n', radii)
+    fprintf('lungs eroded at radii %.3f \n', radii(rad))
 %figure for erosion 
-    figure(3)
-    imagesc(Lungs_Erosion(:,:,100))
-    f3=figure(3)
-    saveas(f3,['Erosion_rad' num2str(radii(rad)) '.png'])
-    fprintf('images of radii %f displayed \n', radii)
+    figure(3);
+    imagesc(Lungs_Erosion(:,:,100));
+    f3=figure(3);
+    saveas(f3,['Erosion_rad' num2str(radii(rad)) '.png']);
+    
+    fprintf('It took %.3f to compute radius of %.3f \n', toc, radii(rad))
+    
 end;
-%% Trying to dilate rightlungROI and leftlungROI in order to add additional parts of lungs into the image 
-
-%%
-%rollingball adds a nonflat ball-shaped structure element 
-%can also use vertical line element strel('line', 11, 90)
-%changing the data from char to logical to be used in dilation
-
-%%
-rollingball= offsetstrel('ball', 5,5); 
-%imdilate must be used on a uint8 or logical, data must be flat and 2D 
-dilatedRightLeftLungROI=imdilate(lungs, rollingball)
-PTKviewer(dilatedRightLeftLungROI)
-%can also use imagesc(dilatedRightLeftLungROI)
-fprintf('added more region to view \n')
-
-
