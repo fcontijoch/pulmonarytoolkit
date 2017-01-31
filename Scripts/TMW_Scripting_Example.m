@@ -28,13 +28,12 @@ fprintf('data gathered \n')
 
 %% Original, Dilation, and Erosion Images 
 %original image
-radii=[1 5 ];
-for rad=1:2;
+radii=[1 5 10 15 20 30 50];
+for rad=1:7;
     tic
     figure(1);
     imagesc(lungs.RawImage(:,:,100));
-    f1=figure(1);
-    
+    f1=figure(1);  
     saveas(f1,['Original_rad' num2str(radii(rad)) '.png']);
 %dilated image using sphere
     Lungs=lungs.RawImage; 
@@ -53,7 +52,5 @@ for rad=1:2;
     imagesc(Lungs_Erosion(:,:,100));
     f3=figure(3);
     saveas(f3,['Erosion_rad' num2str(radii(rad)) '.png']);
-    
-    fprintf('It took %.3f to compute radius of %.3f \n', toc, radii(rad))
-    
+    fprintf('It took %.3f to compute radius of %.3f \n', toc, radii(rad))    
 end;
