@@ -15,19 +15,16 @@ fprintf('c')
 %% Segmentation
 lungs = dataset.GetResult('PTKLeftAndRightLungs');
 %%
-lobes = dataset.GetResult('PTKLobes');
-vessels = dataset.GetResult('PTKVesselness');
-vessels2 = dataset.GetResult('PTKVesselnessDilated');
-%%
-PTKViewer(lungs)
-%% Trying to dilate rightlungROI and leftlungROI in order to add additional parts of lungs into the image 
-X=dicomread(lungs);
-%%
-rollingball= offsetstrel('ball', 5,5); 
-%% Expected input number 1, IM, to be one of these types:numeric, logical
-%%how to convert PTKDicomImage into nueric or logical??
-dilatedRightLungROI=imdilate(lungs,rollingball)
-%%
-PTKviewer(dilatedRightLungROI)
-fprintf('it ran')
+%lobes = dataset.GetResult('PTKLobes');
+%vessels = dataset.GetResult('PTKVesselness');
+%vessels2 = dataset.GetResult('PTKVesselnessDilated');
+%% Dilation and erosion
+radius=15;
+figure(1);
+imagesc(lungs.RawImage(:,:,100));
+
+lungs2 = lungs.RawImage;
+lungs2dilation = imdilate(lungs2,strel('sphere',radius));
+
+
 
