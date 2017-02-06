@@ -21,9 +21,11 @@ dataset.DeleteCacheForThisDataset;
 %[airway_tree, airway_image] = dataset.GetResult('PTKAirways');
 %size_dilation_mm = 2.5;
 %max_generation = 3;
-
-lungs = dataset.GetResult('PTKLeftAndRightLungs');
-vessels = dataset.GetResult('PTKVesselness');
+global dil_rad;
+dil_rad = 5;
+lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
+%%
+vessels_dilated = dataset.GetResult('PTKVesselness');
 
 %lobes = dataset.GetResult('PTKLobes');
 
@@ -87,12 +89,12 @@ PTKViewer(lungs);
 
 %%
 %Save DICOM Images
-%dir_files='/Users/roshniravindran/Modeling/pulmonarytoolkit_data';
-%mkdir(dir_files);
+dir_files='/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs';
+mkdir(dir_files);
 
 %PTKSaveAs(vessels,'Patient Name',dir_files, 0, reporting)
 
-PTKSaveImageAsDicom(vessels,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data', 'vessels', 'BPA201701', true, reporting)
-
+PTKSaveImageAsDicom(vessels_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data', 'vessels', 'BPA201701_', true, reporting)
+PTKSaveImageAsDicom(lungs_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs', 'lungs', 'BPA201701', true, reporting)
 
 
