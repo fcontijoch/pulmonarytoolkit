@@ -6,7 +6,10 @@ source_path = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTER
 %%
 %make dataset and default reporting object
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 ptk_main = PTKMain;
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 reporting = CoreReporting();
@@ -91,7 +94,12 @@ mkdir(dir_files);
 
 %PTKSaveAs(vessels,'Patient Name',dir_files, 0, reporting)
 
+<<<<<<< HEAD
+PTKSaveImageAsDicom(vessels,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data', 'vessels', 'BPA201701', true, reporting)
+
+=======
 PTKSaveImageAsDicom(vessels_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data', 'vessels', 'BPA201701_', true, reporting)
 PTKSaveImageAsDicom(lungs_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs', 'lungs', 'BPA201701', true, reporting)
+>>>>>>> f7c4a8acada7f83844c87213f220614a9e00ba33
 
 
