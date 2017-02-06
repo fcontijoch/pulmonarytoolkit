@@ -60,10 +60,10 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
     left_lung.ChangeRawImage(2*uint8(left_lung.RawImage));
     
     %dilation and erosion of left lung
-%     LeftLungImage = left_lung.RawImage == 2;
-%     LeftLungImage_Dilate = imdilate(LeftLungImage, strel('sphere',10);
-%     LeftLungImage_Erode= imerode(LeftLungImage_Dilate,strel('sphere', 10);
-%     left_lung.ChangeRawImage(2*uint8(LeftLungImage_Erode));
+    LeftLungImage = left_lung.RawImage ==2;
+    LeftLungImage_Dilate = imdilate(LeftLungImage, strel('sphere',10));
+    LeftLungImage_Erode= imerode(LeftLungImage_Dilate,strel('sphere', 10));
+    left_lung.ChangeRawImage(2*uint8(LeftLungImage_Erode));
     
     
     % Get the left lung volume
@@ -85,4 +85,5 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
     results2.ChangeSubImage(right_lung);
     results.ChangeRawImage(min(2, results.RawImage + results2.RawImage));
     results.ImageType = PTKImageType.Colormap;
+                                   
 end
