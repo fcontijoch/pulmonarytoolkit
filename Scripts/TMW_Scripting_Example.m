@@ -21,15 +21,15 @@ fprintf('cache removed \n')
 %% Segmentations
 %getting data from the image set
 lungs = dataset.GetResult('PTKLeftAndRightLungs');
-%lobes = dataset.GetResult('PTKLobes');
-%vessels = dataset.GetResult('PTKVesselness');
-%vessels2 = dataset.GetResult('PTKVesselnessDilated');
+lobes = dataset.GetResult('PTKLobes');
+vessels = dataset.GetResult('PTKVesselness');
+vessels2 = dataset.GetResult('PTKVesselnessDilated');
 fprintf('data gathered \n') 
 
 %% Original, Dilation, and Erosion Images 
 %original image
-radii=[1 5 10 15 20 30 50];
-for rad=1:7;
+radii=[5];
+for rad=1;
     tic
     figure(1);
     imagesc(lungs.RawImage(:,:,100));
@@ -54,3 +54,13 @@ for rad=1:7;
     saveas(f3,['Erosion_rad' num2str(radii(rad)) '.png']);
     fprintf('It took %.3f to compute radius of %.3f \n', toc, radii(rad))    
 end;
+%% 
+Dilated_Lungs=ChangerawImage(
+
+%% 
+v1=figure(4)
+imagesc(vessels.RawImage(:,:,100))
+v2=figure(5)
+imagesc(vessels2.RawImage(:,:,10))
+PTKViewer(vessels2)
+
