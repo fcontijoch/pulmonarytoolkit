@@ -93,6 +93,7 @@ PTKViewer(lungs);
 %PTKSaveAs(vessels,'Patient Name',dir_files, 0, reporting)
 
 PTKSaveImageAsDicom(vessels,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data', 'vessels', 'BPA201701', true, reporting)
+PTKSaveImageAsDicom(vessels,'C:\Users\terrence1995\Desktop\dicom images rosh', 'vessels', 'BPA201701', true, reporting)
 
 
 
