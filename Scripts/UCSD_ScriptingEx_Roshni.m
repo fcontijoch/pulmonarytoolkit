@@ -3,14 +3,11 @@ PTKAddPaths;
 
 %% load dataset
 source_path = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
-source_pathT='C:\Users\terrence1995\Desktop\CT scans\CARCINOMIX\CT THORACO-ABDO\ARTERIELLES - 5';
 %%
 %make dataset and default reporting object
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
-file_infosT = PTKDicomUtilities.GetListOfDicomFiles(source_pathT);
 ptk_main = PTKMain;
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
-dataset = ptk_main.CreateDatasetFromInfo(file_infosT)
 reporting = CoreReporting();
 
 dataset.DeleteCacheForThisDataset;
@@ -21,9 +18,11 @@ dataset.DeleteCacheForThisDataset;
 %[airway_tree, airway_image] = dataset.GetResult('PTKAirways');
 %size_dilation_mm = 2.5;
 %max_generation = 3;
-
-lungs = dataset.GetResult('PTKLeftAndRightLungs');
-vessels = dataset.GetResult('PTKVesselness');
+global dil_rad;
+dil_rad = 5;
+lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
+%%
+vessels_dilated = dataset.GetResult('PTKVesselness');
 
 %lobes = dataset.GetResult('PTKLobes');
 
@@ -87,13 +86,17 @@ PTKViewer(lungs);
 
 %%
 %Save DICOM Images
-%dir_files='/Users/roshniravindran/Modeling/pulmonarytoolkit_data';
-%mkdir(dir_files);
+dir_files='/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs';
+mkdir(dir_files);
 
 %PTKSaveAs(vessels,'Patient Name',dir_files, 0, reporting)
 
+<<<<<<< HEAD
 PTKSaveImageAsDicom(vessels,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data', 'vessels', 'BPA201701', true, reporting)
-PTKSaveImageAsDicom(vessels,'C:\Users\terrence1995\Desktop\dicom images rosh', 'vessels', 'BPA201701', true, reporting)
 
+=======
+PTKSaveImageAsDicom(vessels_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data', 'vessels', 'BPA201701_', true, reporting)
+PTKSaveImageAsDicom(lungs_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs', 'lungs', 'BPA201701', true, reporting)
+>>>>>>> f7c4a8acada7f83844c87213f220614a9e00ba33
 
 
