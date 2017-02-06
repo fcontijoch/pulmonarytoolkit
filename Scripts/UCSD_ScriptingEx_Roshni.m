@@ -3,13 +3,14 @@ PTKAddPaths;
 
 %% load dataset
 source_path = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
-
+source_pathT='C:\Users\terrence1995\Desktop\CT scans\CARCINOMIX\CT THORACO-ABDO\ARTERIELLES - 5';
 %%
 %make dataset and default reporting object
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
-
+file_infosT = PTKDicomUtilities.GetListOfDicomFiles(source_pathT);
 ptk_main = PTKMain;
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
+dataset = ptk_main.CreateDatasetFromInfo(file_infosT)
 reporting = CoreReporting();
 
 dataset.DeleteCacheForThisDataset;
