@@ -13,18 +13,21 @@ dataset.DeleteCacheForThisDataset;
 fprintf('c')
 
 %% Segmentation
-lungs = dataset.GetResult('PTKLeftAndRightLungs');
+%lungs = dataset.GetResult('PTKLeftAndRightLungs');
+%vessels = dataset.GetResult('PTKVesselness');
+vessels2 = dataset.GetResult('PTKVesselnessDilated');
 %%
 %lobes = dataset.GetResult('PTKLobes');
 %vessels = dataset.GetResult('PTKVesselness');
 %vessels2 = dataset.GetResult('PTKVesselnessDilated');
 %% Dilation and erosion
-radius=15;
+radius=3;
 figure(1);
 imagesc(lungs.RawImage(:,:,100));
 
 lungs2 = lungs.RawImage;
 lungs2dilation = imdilate(lungs2,strel('sphere',radius));
+
 
 
 
