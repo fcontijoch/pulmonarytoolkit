@@ -21,9 +21,9 @@ fprintf('cache removed \n')
 %% Segmentations
 %getting data from the image set
 lungs = dataset.GetResult('PTKLeftAndRightLungs');
-lobes = dataset.GetResult('PTKLobes');
-vessels = dataset.GetResult('PTKVesselness');
-vessels2 = dataset.GetResult('PTKVesselnessDilated');
+%lobes = dataset.GetResult('PTKLobes');
+%vessels = dataset.GetResult('PTKVesselness');
+%vessels2 = dataset.GetResult('PTKVesselnessDilated');
 fprintf('data gathered \n') 
 
 %% Original, Dilation, and Erosion Images 
