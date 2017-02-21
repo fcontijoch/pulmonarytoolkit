@@ -1,3 +1,4 @@
+tic
 clear; clc;
 PTKAddPaths;
 
@@ -79,21 +80,25 @@ vessels_dilated = dataset.GetResult('PTKVesselness');
 
 %%
 %visualize 2D
-PTKViewer(vessels_dilated);
+PTKViewer(lungs_dilated);
 
 %visualize 3D
 
 %%
 %Save DICOM Images
-dir_files_lungs='/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs';
-dir_files_vessels='/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels';
+dir_files_lungs='/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs5';
+dir_files_vessels='/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels5';
 
 mkdir(dir_files_lungs);
 mkdir(dir_files_vessels);
 
 %PTKSaveAs(vessels,'Patient Name',dir_files, 0, reporting)
 
-PTKSaveImageAsDicom(vessels_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels', 'dilated5', 'CARCINOMIX', true, reporting)
-PTKSaveImageAsDicom(lungs_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs', 'dilated5', 'CARCINOMIX', true, reporting)
+PTKSaveImageAsDicom(vessels_dilated,dir_files_vessels, 'dilated5', 'CARCINOMIX', true, reporting)
+PTKSaveImageAsDicom(lungs_dilated,dir_files_lungs, 'dilated5', 'CARCINOMIX', true, reporting)
+toc
 
+for j=5:5:25;
+    str=['Dilation' num2str(j)];
+   
 
