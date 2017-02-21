@@ -9,6 +9,8 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
     %     Author: Tom Doel, 2012.  www.tomdoel.com
     %     Distributed under the GNU GPL v3 licence. Please see website for details.
 
+    %Roshni added global variable
+    global dil_rad
     
     min_volume_warning_limit = 2000;
     l_to_r_ratio_limit = 1.5;
@@ -35,10 +37,9 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
     right_lung.ChangeRawImage(uint8(right_lung.RawImage));
     
     %dilation of right lung using the imdilate and erode. both should be the same 
-    rad_morp = 5;
      RightLungImage= right_lung.RawImage;
-     RightLungImage_Dilate=imdilate(RightLungImage, strel('sphere', rad_morp));
-     RightLungImage_Erode=imerode(RightLungImage_Dilate, strel('sphere', rad_morp));
+     RightLungImage_Dilate=imdilate(RightLungImage, strel('sphere', dil_rad));
+     RightLungImage_Erode=imerode(RightLungImage_Dilate, strel('sphere', dil_rad));
      right_lung.ChangeRawImage(uint8(RightLungImage_Erode));
 
     % Get the right lung volume
@@ -61,8 +62,8 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
     
     %dilation and erosion of left lung
      LeftLungImage = left_lung.RawImage == 2;
-     LeftLungImage_Dilate = imdilate(LeftLungImage, strel('sphere',rad_morp));
-     LeftLungImage_Erode= imerode(LeftLungImage_Dilate,strel('sphere', rad_morp));
+     LeftLungImage_Dilate = imdilate(LeftLungImage, strel('sphere',dil_rad));
+     LeftLungImage_Erode= imerode(LeftLungImage_Dilate,strel('sphere', dil_rad));
      left_lung.ChangeRawImage(2*uint8(LeftLungImage_Erode));
     
     
