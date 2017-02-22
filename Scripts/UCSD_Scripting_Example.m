@@ -50,22 +50,11 @@ PTKSaveImageAsDicom(vesselsDilated,dir_files, 'vessels', 'BPA201701 Vessels 10B'
 
 %this does not work: must fix
 %PTKVisualiseIn3D([],vessels2,4,false,reporting);
-%%
-
-%% Trying to dilate rightlungROI and leftlungROI in order to add additional parts of lungs into the image 
-lungs = dataset.GetResult('PTKLeftAndRightLungs');
-rollingball= offsetstrel('ball', 5,5); 
-dilatedRightLungROI=imdilate(lungs, rollingball)
-PTKviewer(dilatedRightLungROI)
-fprintf('it ran')
-
-
+%
 
 %% Check if we can run vessel code on whole image, not lung restricted (commented out for now b/c did not work)
 
 %vessels_all = dataset.GetResult('PTKVesselness');
-%%
-PTKViewer(lungs);
 %%
 PTKViewer(vesselsDilated);
 

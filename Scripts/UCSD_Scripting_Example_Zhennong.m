@@ -1,4 +1,4 @@
-clear; clc;
+clc;clear;
 PTKAddPaths;
 %%
 ptk_main = PTKMain;
@@ -13,9 +13,9 @@ dataset.DeleteCacheForThisDataset;
 fprintf('c')
 
 %% Segmentation
-%lungs = dataset.GetResult('PTKLeftAndRightLungs');
-%vessels = dataset.GetResult('PTKVesselness');
-vessels2 = dataset.GetResult('PTKVesselnessDilated');
+lungsxx = dataset.GetResult('PTKLeftAndRightLungs');
+vesselsxx = dataset.GetResult('PTKVesselness');
+vessels2xx = dataset.GetResult('PTKVesselnessDilated');
 %%
 %lobes = dataset.GetResult('PTKLobes');
 %vessels = dataset.GetResult('PTKVesselness');
