@@ -86,7 +86,7 @@ classdef PTKVesselness < PTKPlugin
             reporting.PushProgress;
 
             %Roshni modified sigma_range
-            sigma_range = 3 : 0.75: 20;
+            sigma_range = 3 : 0.75: 25;
             num_calculations = numel(sigma_range);
             vesselness = [];
             progress_index = 0;

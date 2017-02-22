@@ -1,0 +1,471 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>UCSD_ScriptingEx_Roshni</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-02-15"><meta name="DC.source" content="UCSD_ScriptingEx_Roshni.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">load dataset</a></li></ul></div><pre class="codeinput">clear; clc;
+PTKAddPaths;
+</pre><h2 id="2">load dataset</h2><pre class="codeinput">source_path = <span class="string">'/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5'</span>;
+</pre><pre class="codeinput"><span class="comment">%make dataset and default reporting object</span>
+file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
+ptk_main = PTKMain;
+dataset = ptk_main.CreateDatasetFromInfo(file_infos);
+reporting = CoreReporting();
+
+dataset.DeleteCacheForThisDataset;
+</pre><pre class="codeoutput">Deleting directory: /Users/roshniravindran/TDPulmonaryToolkit/ResultsCache/1.2.840.113704.1.111.7388.1218192699.232
+</pre><p>Segmentation</p><pre class="codeinput"><span class="comment">%threshold_image = dataset.GetResult('PTKUnclosedLungIncludingTrachea');</span>
+<span class="comment">%[airway_tree, airway_image] = dataset.GetResult('PTKAirways');</span>
+<span class="comment">%size_dilation_mm = 2.5;</span>
+<span class="comment">%max_generation = 3;</span>
+dil_rad = 5;
+lungs_dilated = dataset.GetResult(<span class="string">'PTKLeftAndRightLungs'</span>);
+</pre><pre class="codeoutput error">Error using CoreReporting/UpdateProgressValue (line 180)
+Error in function CoreReporting.UpdateProgressValue: User cancelled
+
+Error in CoreReportingWithCache/UpdateProgressValue (line 95)
+            obj.Reporting.UpdateProgressValue(progress_value);
+
+Error in DMLoadImagesFromMetadataGrouping (line 69)
+        reporting.UpdateProgressValue(round(100*(file_index)/num_slices));
+
+Error in DMLoadMainImageFromDicomFiles (line 79)
+    imageWrapper = DMLoadImagesFromMetadataGrouping(main_group, dicomLibrary, reporting);
+
+Error in PTKLoadImageFromDicomFiles (line 36)
+    [image_volume_wrapper, representative_metadata, slice_thickness, global_origin_mm] = DMLoadMainImageFromDicomFiles(image_path, filenames, dicomLibrary, reporting);
+
+Error in PTKLoadImages (line 47)
+                image = PTKLoadImageFromDicomFiles(image_path, filenames, reporting);
+
+Error in PTKOriginalImage.RunPlugin (line 46)
+            results = PTKLoadImages(dataset.GetImageInfo, reporting);
+
+Error in PTKPluginDependencyTracker/GetResult (line 110)
+                    result = plugin_class.RunPlugin(dataset_callback, context, reporting);
+
+Error in PTKContextHierarchy/GetResultForAllContexts (line 142)
+                [result, plugin_has_been_run, cache_info] = obj.DependencyTracker.GetResult(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResultRecursive (line 116)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.GetResultForAllContexts(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResult (line 84)
+                [next_result, output_image, next_plugin_has_been_run, cache_info] = obj.GetResultRecursive(plugin_name, next_output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/ComputeResultForAllContexts (line 379)
+                    [result, output_image, plugin_has_been_run, cache_info] = obj.ContextHierarchy.GetResult(plugin_name, context, obj.LinkedDatasetChooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/RunPluginWithOptionalImageGeneration (line 352)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.ComputeResultForAllContexts(plugin_name, context, plugin_info, plugin_class, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/GetResult (line 97)
+            [result, cache_info, output_image, plugin_has_been_run] = obj.RunPluginWithOptionalImageGeneration(plugin_name, plugin_info, plugin_class, generate_results, dataset_stack, context, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetCallback/GetResult (line 78)
+                [result, ~] = obj.LinkedDatasetChooser.GetDataset(obj.Reporting, varargin{:}).GetResult(plugin_name, obj.DatasetStack, context, obj.Reporting, []);
+
+Error in PTKLungROI.RunPlugin (line 48)
+                results = PTKGetLungROIForCT(dataset.GetResult('PTKOriginalImage', PTKContext.OriginalImage), reporting);
+
+Error in PTKPluginDependencyTracker/GetResult (line 108)
+                    result = plugin_class.RunPlugin(dataset_callback, reporting);
+
+Error in PTKContextHierarchy/GetResultForAllContexts (line 142)
+                [result, plugin_has_been_run, cache_info] = obj.DependencyTracker.GetResult(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResultRecursive (line 116)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.GetResultForAllContexts(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResult (line 84)
+                [next_result, output_image, next_plugin_has_been_run, cache_info] = obj.GetResultRecursive(plugin_name, next_output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/ComputeResultForAllContexts (line 379)
+                    [result, output_image, plugin_has_been_run, cache_info] = obj.ContextHierarchy.GetResult(plugin_name, context, obj.LinkedDatasetChooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/RunPluginWithOptionalImageGeneration (line 352)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.ComputeResultForAllContexts(plugin_name, context, plugin_info, plugin_class, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/GetResult (line 97)
+            [result, cache_info, output_image, plugin_has_been_run] = obj.RunPluginWithOptionalImageGeneration(plugin_name, plugin_info, plugin_class, generate_results, dataset_stack, context, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetCallback/GetResult (line 78)
+                [result, ~] = obj.LinkedDatasetChooser.GetDataset(obj.Reporting, varargin{:}).GetResult(plugin_name, obj.DatasetStack, context, obj.Reporting, []);
+
+Error in PTKThresholdLungFiltered.RunPlugin (line 46)
+                lung_roi = dataset.GetResult('PTKLungROI');
+
+Error in PTKPluginDependencyTracker/GetResult (line 108)
+                    result = plugin_class.RunPlugin(dataset_callback, reporting);
+
+Error in PTKContextHierarchy/GetResultForAllContexts (line 142)
+                [result, plugin_has_been_run, cache_info] = obj.DependencyTracker.GetResult(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResultRecursive (line 116)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.GetResultForAllContexts(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResult (line 84)
+                [next_result, output_image, next_plugin_has_been_run, cache_info] = obj.GetResultRecursive(plugin_name, next_output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/ComputeResultForAllContexts (line 379)
+                    [result, output_image, plugin_has_been_run, cache_info] = obj.ContextHierarchy.GetResult(plugin_name, context, obj.LinkedDatasetChooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/RunPluginWithOptionalImageGeneration (line 352)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.ComputeResultForAllContexts(plugin_name, context, plugin_info, plugin_class, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/GetResult (line 97)
+            [result, cache_info, output_image, plugin_has_been_run] = obj.RunPluginWithOptionalImageGeneration(plugin_name, plugin_info, plugin_class, generate_results, dataset_stack, context, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetCallback/GetResult (line 78)
+                [result, ~] = obj.LinkedDatasetChooser.GetDataset(obj.Reporting, varargin{:}).GetResult(plugin_name, obj.DatasetStack, context, obj.Reporting, []);
+
+Error in PTKUnclosedLungIncludingTrachea.RunPlugin (line 49)
+                threshold_image = dataset.GetResult('PTKThresholdLungFiltered');
+
+Error in PTKPluginDependencyTracker/GetResult (line 108)
+                    result = plugin_class.RunPlugin(dataset_callback, reporting);
+
+Error in PTKContextHierarchy/GetResultForAllContexts (line 142)
+                [result, plugin_has_been_run, cache_info] = obj.DependencyTracker.GetResult(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResultRecursive (line 116)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.GetResultForAllContexts(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResult (line 84)
+                [next_result, output_image, next_plugin_has_been_run, cache_info] = obj.GetResultRecursive(plugin_name, next_output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/ComputeResultForAllContexts (line 379)
+                    [result, output_image, plugin_has_been_run, cache_info] = obj.ContextHierarchy.GetResult(plugin_name, context, obj.LinkedDatasetChooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/RunPluginWithOptionalImageGeneration (line 352)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.ComputeResultForAllContexts(plugin_name, context, plugin_info, plugin_class, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/GetResult (line 97)
+            [result, cache_info, output_image, plugin_has_been_run] = obj.RunPluginWithOptionalImageGeneration(plugin_name, plugin_info, plugin_class, generate_results, dataset_stack, context, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetCallback/GetResult (line 78)
+                [result, ~] = obj.LinkedDatasetChooser.GetDataset(obj.Reporting, varargin{:}).GetResult(plugin_name, obj.DatasetStack, context, obj.Reporting, []);
+
+Error in PTKUnclosedLungExcludingTrachea.RunPlugin (line 45)
+            threshold_image = dataset.GetResult('PTKUnclosedLungIncludingTrachea');
+
+Error in PTKPluginDependencyTracker/GetResult (line 108)
+                    result = plugin_class.RunPlugin(dataset_callback, reporting);
+
+Error in PTKContextHierarchy/GetResultForAllContexts (line 142)
+                [result, plugin_has_been_run, cache_info] = obj.DependencyTracker.GetResult(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResultRecursive (line 116)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.GetResultForAllContexts(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResult (line 84)
+                [next_result, output_image, next_plugin_has_been_run, cache_info] = obj.GetResultRecursive(plugin_name, next_output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/ComputeResultForAllContexts (line 379)
+                    [result, output_image, plugin_has_been_run, cache_info] = obj.ContextHierarchy.GetResult(plugin_name, context, obj.LinkedDatasetChooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/RunPluginWithOptionalImageGeneration (line 352)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.ComputeResultForAllContexts(plugin_name, context, plugin_info, plugin_class, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/GetResult (line 97)
+            [result, cache_info, output_image, plugin_has_been_run] = obj.RunPluginWithOptionalImageGeneration(plugin_name, plugin_info, plugin_class, generate_results, dataset_stack, context, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetCallback/GetResult (line 78)
+                [result, ~] = obj.LinkedDatasetChooser.GetDataset(obj.Reporting, varargin{:}).GetResult(plugin_name, obj.DatasetStack, context, obj.Reporting, []);
+
+Error in PTKLeftAndRightLungsInitialiser.RunPlugin (line 42)
+                unclosed_lungs = dataset.GetResult('PTKUnclosedLungExcludingTrachea', PTKContext.LungROI);
+
+Error in PTKPluginDependencyTracker/GetResult (line 108)
+                    result = plugin_class.RunPlugin(dataset_callback, reporting);
+
+Error in PTKContextHierarchy/GetResultForAllContexts (line 142)
+                [result, plugin_has_been_run, cache_info] = obj.DependencyTracker.GetResult(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResultRecursive (line 116)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.GetResultForAllContexts(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResult (line 84)
+                [next_result, output_image, next_plugin_has_been_run, cache_info] = obj.GetResultRecursive(plugin_name, next_output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/ComputeResultForAllContexts (line 379)
+                    [result, output_image, plugin_has_been_run, cache_info] = obj.ContextHierarchy.GetResult(plugin_name, context, obj.LinkedDatasetChooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/RunPluginWithOptionalImageGeneration (line 352)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.ComputeResultForAllContexts(plugin_name, context, plugin_info, plugin_class, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/GetResult (line 97)
+            [result, cache_info, output_image, plugin_has_been_run] = obj.RunPluginWithOptionalImageGeneration(plugin_name, plugin_info, plugin_class, generate_results, dataset_stack, context, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetCallback/GetResult (line 78)
+                [result, ~] = obj.LinkedDatasetChooser.GetDataset(obj.Reporting, varargin{:}).GetResult(plugin_name, obj.DatasetStack, context, obj.Reporting, []);
+
+Error in PTKLeftAndRightLungs.RunPlugin (line 47)
+                results = dataset.GetResult('PTKLeftAndRightLungsInitialiser');
+
+Error in PTKPluginDependencyTracker/GetResult (line 108)
+                    result = plugin_class.RunPlugin(dataset_callback, reporting);
+
+Error in PTKContextHierarchy/GetResultForAllContexts (line 142)
+                [result, plugin_has_been_run, cache_info] = obj.DependencyTracker.GetResult(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResultRecursive (line 116)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.GetResultForAllContexts(plugin_name, output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKContextHierarchy/GetResult (line 84)
+                [next_result, output_image, next_plugin_has_been_run, cache_info] = obj.GetResultRecursive(plugin_name, next_output_context, linked_dataset_chooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/ComputeResultForAllContexts (line 379)
+                    [result, output_image, plugin_has_been_run, cache_info] = obj.ContextHierarchy.GetResult(plugin_name, context, obj.LinkedDatasetChooser, plugin_info, plugin_class, dataset_uid, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/RunPluginWithOptionalImageGeneration (line 352)
+            [result, output_image, plugin_has_been_run, cache_info] = obj.ComputeResultForAllContexts(plugin_name, context, plugin_info, plugin_class, dataset_stack, force_generate_image, allow_results_to_be_cached, reporting);
+
+Error in PTKDatasetResults/GetResult (line 97)
+            [result, cache_info, output_image, plugin_has_been_run] = obj.RunPluginWithOptionalImageGeneration(plugin_name, plugin_info, plugin_class, generate_results, dataset_stack, context, allow_results_to_be_cached, reporting);
+
+Error in PTKDataset/GetResultWithCacheInfo (line 125)
+                    [result, cache_info] = obj.LinkedDatasetChooser.GetDataset(obj.Reporting, varargin{:}).GetResult(plugin_name, obj.DatasetStack, context, obj.Reporting, varargin{2:end});
+
+Error in PTKDataset/GetResult (line 107)
+                [result, ~] = obj.GetResultWithCacheInfo(plugin_name, varargin{:});
+
+Error in UCSD_ScriptingEx_Roshni (line 22)
+lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
+</pre><pre class="codeinput">vessels_dilated = dataset.GetResult(<span class="string">'PTKVesselness'</span>);
+
+<span class="comment">%lobes = dataset.GetResult('PTKLobes');</span>
+
+<span class="comment">%lung_notrachea = dataset.GetResult('PTKUnclosedLungExcludingTrachea');</span>
+<span class="comment">% %% Original, Dilation, and Erosion Images</span>
+<span class="comment">% %original image</span>
+<span class="comment">% radii=[1 5 10 15 20 30 50];</span>
+<span class="comment">% % for rad=1:7;</span>
+<span class="comment">%     tic</span>
+<span class="comment">%     figure(1);</span>
+<span class="comment">%     imagesc(lungs.RawImage(:,:,100));</span>
+<span class="comment">%     f1=figure(1);</span>
+<span class="comment">%     saveas(f1,['Original_rad' num2str(radii(rad)) '.png']);</span>
+<span class="comment">% %dilated image using sphere</span>
+<span class="comment">%     Lungs=lungs.RawImage;</span>
+<span class="comment">%     Lungs_Dilation= imdilate(Lungs, strel('sphere', radii(rad)));</span>
+<span class="comment">%     fprintf('lungs dilated at radii %.3f \n', radii(rad))</span>
+<span class="comment">% % figure for dilation</span>
+<span class="comment">%     figure(2);</span>
+<span class="comment">%     imagesc(Lungs_Dilation(:,:,100));</span>
+<span class="comment">%     f2=figure(2);</span>
+<span class="comment">%     saveas(f2,['Dilation_rad' num2str(radii(rad)) '.png']);</span>
+<span class="comment">% % eroded image</span>
+<span class="comment">%     Lungs_Erosion=imerode(Lungs_Dilation, strel('sphere', radii(rad)));</span>
+<span class="comment">%     fprintf('lungs eroded at radii %.3f \n', radii(rad))</span>
+<span class="comment">% %figure for erosion</span>
+<span class="comment">%     figure(3);</span>
+<span class="comment">%     imagesc(Lungs_Erosion(:,:,100));</span>
+<span class="comment">%     f3=figure(3);</span>
+<span class="comment">%     saveas(f3,['Erosion_rad' num2str(radii(rad)) '.png']);</span>
+<span class="comment">%     fprintf('It took %.3f to compute radius of %.3f \n', toc, radii(rad))</span>
+<span class="comment">% end;</span>
+<span class="comment">% %%</span>
+<span class="comment">% % Include Aortic branch + main vessels in lung image</span>
+<span class="comment">%</span>
+<span class="comment">% orig_image = dataset.GetResult('PTKOriginalImage');</span>
+<span class="comment">% reduced_image = orig_image.Copy;</span>
+<span class="comment">% reduced_image = PTKGaussianFilter(reduced_image, 1.0, true);</span>
+<span class="comment">% scale_factor = reduced_image.Scale;</span>
+<span class="comment">%</span>
+<span class="comment">% lung_image = orig_image.Copy;</span>
+<span class="comment">% raw_image = orig_image.RawImage;</span>
+<span class="comment">%     raw_image(3:end-2, 3:end-2, 3:end-2) = lung_image.RawImage(3:end-2, 3:end-2, 3:end-2);</span>
+<span class="comment">%     lung_image.ChangeRawImage(raw_image);</span>
+<span class="comment">%</span>
+<span class="comment">%     limit_1 = lung_image.RescaledToGreyscale(-1500);</span>
+<span class="comment">%     limit_2 = lung_image.RescaledToGreyscale(-400);</span>
+<span class="comment">%     lung_image = (lung_image &gt;= limit_1 &amp; lung_image &lt;= limit_2);</span>
+<span class="comment">%</span>
+<span class="comment">%     threshold_image = lung_image.BlankCopy;</span>
+<span class="comment">%     threshold_image.ImageType = PTKImageType.Colormap;</span>
+<span class="comment">%     threshold_image.ChangeRawImage(lung_image);</span>
+<span class="comment">%</span>
+<span class="comment">%     lung_image = PTKThresholdAirway(lung_image, true);</span>
+</pre><pre class="codeinput"><span class="comment">%visualize 2D</span>
+<span class="comment">%PTKViewer(lungs);</span>
+
+<span class="comment">%visualize 3D</span>
+</pre><pre class="codeinput"><span class="comment">%Save DICOM Images</span>
+dir_files_lungs=<span class="string">'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs'</span>;
+dir_files_vessels=<span class="string">'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels'</span>;
+
+mkdir(dir_files_lungs);
+mkdir(dir_files_vessels);
+
+<span class="comment">%PTKSaveAs(vessels,'Patient Name',dir_files, 0, reporting)</span>
+
+PTKSaveImageAsDicom(vessels_dilated,<span class="string">'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels'</span>, <span class="string">'dilated5'</span>, <span class="string">'CARCINOMIX'</span>, true, reporting)
+PTKSaveImageAsDicom(lungs_dilated,<span class="string">'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs'</span>, <span class="string">'dilated5'</span>, <span class="string">'CARCINOMIX'</span>, true, reporting)
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; clc;
+PTKAddPaths;
+
+%% load dataset
+source_path = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
+%%
+%make dataset and default reporting object
+file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
+ptk_main = PTKMain;
+dataset = ptk_main.CreateDatasetFromInfo(file_infos);
+reporting = CoreReporting();
+
+dataset.DeleteCacheForThisDataset;
+
+%%
+% Segmentation
+%threshold_image = dataset.GetResult('PTKUnclosedLungIncludingTrachea');
+%[airway_tree, airway_image] = dataset.GetResult('PTKAirways');
+%size_dilation_mm = 2.5;
+%max_generation = 3;
+dil_rad = 5;
+lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
+%%
+vessels_dilated = dataset.GetResult('PTKVesselness');
+
+%lobes = dataset.GetResult('PTKLobes');
+
+%lung_notrachea = dataset.GetResult('PTKUnclosedLungExcludingTrachea');
+% %% Original, Dilation, and Erosion Images 
+% %original image
+% radii=[1 5 10 15 20 30 50];
+% % for rad=1:7;
+%     tic
+%     figure(1);
+%     imagesc(lungs.RawImage(:,:,100));
+%     f1=figure(1);  
+%     saveas(f1,['Original_rad' num2str(radii(rad)) '.png']);
+% %dilated image using sphere
+%     Lungs=lungs.RawImage; 
+%     Lungs_Dilation= imdilate(Lungs, strel('sphere', radii(rad))); 
+%     fprintf('lungs dilated at radii %.3f \n', radii(rad))
+% % figure for dilation
+%     figure(2);
+%     imagesc(Lungs_Dilation(:,:,100));
+%     f2=figure(2);
+%     saveas(f2,['Dilation_rad' num2str(radii(rad)) '.png']);
+% % eroded image 
+%     Lungs_Erosion=imerode(Lungs_Dilation, strel('sphere', radii(rad)));
+%     fprintf('lungs eroded at radii %.3f \n', radii(rad))
+% %figure for erosion 
+%     figure(3);
+%     imagesc(Lungs_Erosion(:,:,100));
+%     f3=figure(3);
+%     saveas(f3,['Erosion_rad' num2str(radii(rad)) '.png']);
+%     fprintf('It took %.3f to compute radius of %.3f \n', toc, radii(rad))    
+% end;
+% %%
+% % Include Aortic branch + main vessels in lung image
+% 
+% orig_image = dataset.GetResult('PTKOriginalImage');
+% reduced_image = orig_image.Copy;
+% reduced_image = PTKGaussianFilter(reduced_image, 1.0, true);
+% scale_factor = reduced_image.Scale;
+% 
+% lung_image = orig_image.Copy;
+% raw_image = orig_image.RawImage;
+%     raw_image(3:end-2, 3:end-2, 3:end-2) = lung_image.RawImage(3:end-2, 3:end-2, 3:end-2);
+%     lung_image.ChangeRawImage(raw_image);
+%     
+%     limit_1 = lung_image.RescaledToGreyscale(-1500);
+%     limit_2 = lung_image.RescaledToGreyscale(-400);
+%     lung_image = (lung_image >= limit_1 & lung_image <= limit_2);
+%     
+%     threshold_image = lung_image.BlankCopy;
+%     threshold_image.ImageType = PTKImageType.Colormap;
+%     threshold_image.ChangeRawImage(lung_image);
+%     
+%     lung_image = PTKThresholdAirway(lung_image, true);
+
+%%
+%visualize 2D
+%PTKViewer(lungs);
+
+%visualize 3D
+
+%%
+%Save DICOM Images
+dir_files_lungs='/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs';
+dir_files_vessels='/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels';
+
+mkdir(dir_files_lungs);
+mkdir(dir_files_vessels);
+
+%PTKSaveAs(vessels,'Patient Name',dir_files, 0, reporting)
+
+PTKSaveImageAsDicom(vessels_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels', 'dilated5', 'CARCINOMIX', true, reporting)
+PTKSaveImageAsDicom(lungs_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs', 'dilated5', 'CARCINOMIX', true, reporting)
+
+
+
+##### SOURCE END #####
+--></body></html>

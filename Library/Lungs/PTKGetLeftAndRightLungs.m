@@ -8,8 +8,9 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
     %     Part of the TD Pulmonary Toolkit. https://github.com/tomdoel/pulmonarytoolkit
     %     Author: Tom Doel, 2012.  www.tomdoel.com
     %     Distributed under the GNU GPL v3 licence. Please see website for details.
-    
-    global dil_rad;
+
+    %Roshni added global variable
+    global dil_rad
     
     min_volume_warning_limit = 2000;
     l_to_r_ratio_limit = 1.5;
@@ -44,12 +45,15 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
    
 
     %dilation of right lung using the imdilate and erode. both should be the same 
-    
      RightLungImage= right_lung.RawImage;
      RightLungImage_Dilate=imdilate(RightLungImage, strel('sphere', dil_rad));
      RightLungImage_Erode=imerode(RightLungImage_Dilate, strel('sphere', dil_rad));
+<<<<<<< HEAD
      right_lung.ChangeRawImage(uint8(RightLungImage_Dilate));
 >>>>>>> a5f6b0547c89cb2a49ff9890d782bd1892874011
+=======
+     right_lung.ChangeRawImage(uint8(RightLungImage_Erode));
+>>>>>>> 050a7d31d9f03cd76f72f25de06226ccbd4ccb12
 
     % Get the right lung volume
     right_lung_volume_mm3 = right_lung.Volume;

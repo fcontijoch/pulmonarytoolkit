@@ -1,104 +1,52 @@
+
 clear; clc;
 PTKAddPaths;
 
 %% load dataset
-source_path = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
+source_carcinomix = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
 %%
 %make dataset and default reporting object
+<<<<<<< HEAD
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
 
 
 
+=======
+file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_carcinomix);
+>>>>>>> 050a7d31d9f03cd76f72f25de06226ccbd4ccb12
 ptk_main = PTKMain;
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 reporting = CoreReporting();
 
 dataset.DeleteCacheForThisDataset;
 
-%%
-% Segmentation
-%threshold_image = dataset.GetResult('PTKUnclosedLungIncludingTrachea');
-%[airway_tree, airway_image] = dataset.GetResult('PTKAirways');
-%size_dilation_mm = 2.5;
-%max_generation = 3;
+%% Segmentation
+%time this step for different dilation radii
+tic
+% dilation/ erosion defined in PTKGetLeftAndRightLungs
+global dil_rad
 dil_rad = 5;
 lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
-%%
 vessels_dilated = dataset.GetResult('PTKVesselness');
+toc
 
-%lobes = dataset.GetResult('PTKLobes');
+%% Save DICOM Images
 
-%lung_notrachea = dataset.GetResult('PTKUnclosedLungExcludingTrachea');
-% %% Original, Dilation, and Erosion Images 
-% %original image
-% radii=[1 5 10 15 20 30 50];
-% % for rad=1:7;
-%     tic
-%     figure(1);
-%     imagesc(lungs.RawImage(:,:,100));
-%     f1=figure(1);  
-%     saveas(f1,['Original_rad' num2str(radii(rad)) '.png']);
-% %dilated image using sphere
-%     Lungs=lungs.RawImage; 
-%     Lungs_Dilation= imdilate(Lungs, strel('sphere', radii(rad))); 
-%     fprintf('lungs dilated at radii %.3f \n', radii(rad))
-% % figure for dilation
-%     figure(2);
-%     imagesc(Lungs_Dilation(:,:,100));
-%     f2=figure(2);
-%     saveas(f2,['Dilation_rad' num2str(radii(rad)) '.png']);
-% % eroded image 
-%     Lungs_Erosion=imerode(Lungs_Dilation, strel('sphere', radii(rad)));
-%     fprintf('lungs eroded at radii %.3f \n', radii(rad))
-% %figure for erosion 
-%     figure(3);
-%     imagesc(Lungs_Erosion(:,:,100));
-%     f3=figure(3);
-%     saveas(f3,['Erosion_rad' num2str(radii(rad)) '.png']);
-%     fprintf('It took %.3f to compute radius of %.3f \n', toc, radii(rad))    
-% end;
-% %%
-% % Include Aortic branch + main vessels in lung image
-% 
-% orig_image = dataset.GetResult('PTKOriginalImage');
-% reduced_image = orig_image.Copy;
-% reduced_image = PTKGaussianFilter(reduced_image, 1.0, true);
-% scale_factor = reduced_image.Scale;
-% 
-% lung_image = orig_image.Copy;
-% raw_image = orig_image.RawImage;
-%     raw_image(3:end-2, 3:end-2, 3:end-2) = lung_image.RawImage(3:end-2, 3:end-2, 3:end-2);
-%     lung_image.ChangeRawImage(raw_image);
-%     
-%     limit_1 = lung_image.RescaledToGreyscale(-1500);
-%     limit_2 = lung_image.RescaledToGreyscale(-400);
-%     lung_image = (lung_image >= limit_1 & lung_image <= limit_2);
-%     
-%     threshold_image = lung_image.BlankCopy;
-%     threshold_image.ImageType = PTKImageType.Colormap;
-%     threshold_image.ChangeRawImage(lung_image);
-%     
-%     lung_image = PTKThresholdAirway(lung_image, true);
+        %make new file directory
+        dir_files_lungs= strcat('/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs', num2str(dil_rad));
+        dir_files_vessels= strcat('/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels', num2str(dil_rad));
+        mkdir(dir_files_lungs, dir_files_vessels);
 
-%%
-%visualize 2D
-PTKViewer(lungs);
+        %Patient ID
+        str_pat_lungs = strcat('Carcinomix', 'lungs', num2str(dil_rad));
+        str_pat_vessels = strcat('Carcinomix', 'vessels', num2str(dil_rad));
+        
+        %Save DICOM images
+        PTKSaveImageAsDicom(lungs_dilated,dir_files_lungs, 'PTKImage', str_pat_lungs, true, reporting)
+        PTKSaveImageAsDicom(vessels_dilated,dir_files_vessels, 'PTKImage', str_pat_vessels, true, reporting)
+        
+%% visualize 2D
+%PTKViewer(lungs_dilated);
 
-%visualize 3D
-
-%%
-%Save DICOM Images
-dir_files='/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs';
-mkdir(dir_files);
-
-%PTKSaveAs(vessels,'Patient Name',dir_files, 0, reporting)
-
-<<<<<<< HEAD
-PTKSaveImageAsDicom(vessels,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data', 'vessels', 'BPA201701', true, reporting)
-
-=======
-PTKSaveImageAsDicom(vessels_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data', 'vessels', 'BPA201701_', true, reporting)
-PTKSaveImageAsDicom(lungs_dilated,'/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs', 'lungs', 'BPA201701', true, reporting)
->>>>>>> f7c4a8acada7f83844c87213f220614a9e00ba33
-
+   
 
