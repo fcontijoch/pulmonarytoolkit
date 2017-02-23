@@ -48,12 +48,8 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
      RightLungImage= right_lung.RawImage;
      RightLungImage_Dilate=imdilate(RightLungImage, strel('sphere', dil_rad));
      RightLungImage_Erode=imerode(RightLungImage_Dilate, strel('sphere', dil_rad));
-<<<<<<< HEAD
-     right_lung.ChangeRawImage(uint8(RightLungImage_Dilate));
->>>>>>> a5f6b0547c89cb2a49ff9890d782bd1892874011
-=======
      right_lung.ChangeRawImage(uint8(RightLungImage_Erode));
->>>>>>> 050a7d31d9f03cd76f72f25de06226ccbd4ccb12
+
 
     % Get the right lung volume
     right_lung_volume_mm3 = right_lung.Volume;
@@ -86,7 +82,6 @@ function results = PTKGetLeftAndRightLungs(unclosed_lungs, filtered_threshold_lu
      LeftLungImage_Erode= imerode(LeftLungImage_Dilate,strel('sphere', dil_rad));
      left_lung.ChangeRawImage(2*uint8(LeftLungImage_Erode));
     
->>>>>>> a5f6b0547c89cb2a49ff9890d782bd1892874011
     
     % Get the left lung volume
     left_lung_volume_mm3 = left_lung.Volume;

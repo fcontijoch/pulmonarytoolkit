@@ -4,7 +4,7 @@ fprintf('PTKAddPath \n');
 
 %% Note, until we fix this issue, please update the file path correctly for for the source_path variable, and the PTK save function calls at the bottom! Thanks -Pranav
 ptk_main = PTKMain;
-source_path = 'C:\Users\terrence1995\Desktop\CT scans\CARCINOMIX\CT THORACO-ABDO\ARTERIELLES - 5';
+source_path = 'C:\Users\terre\Desktop\CT THORACO-ABDO\ARTERIELLES - 5';
 fprintf('source_paths \n')
 %%
 %IMPORTANT! READ THIS: Please remove cache when re-running results
@@ -54,13 +54,35 @@ for rad=1;
     saveas(f3,['Erosion_rad' num2str(radii(rad)) '.png']);
     fprintf('It took %.3f to compute radius of %.3f \n', toc, radii(rad))    
 end;
-%% 
-Dilated_Lungs=ChangerawImage(
+%% Segmentation 
+tic 
+global dil_rad
+dil_rad =5; 
+lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
+vessels_dilated = dataset.GetResult('PTKVesselness');
+toc
 
-%% 
+%% Save DICOM Images 
+
+
 v1=figure(4)
 imagesc(vessels.RawImage(:,:,100))
 v2=figure(5)
 imagesc(vessels2.RawImage(:,:,10))
 PTKViewer(vessels2)
 
+%% Save DICOM Images
+
+        %make new file directory
+        dir_files_lungs= strcat('C:\Users\terre\Desktop\dilation output\lungs_data', num2str(dil_rad));
+        dir_files_vessels= strcat('C:\Users\terre\Desktop\dilation output\vessel_data', num2str(dil_rad));
+        mkdir(dir_files_lungs, dir_files_vessels);
+
+        %Patient ID
+        str_pat_lungs = strcat('Carcinomix', 'lungs', num2str(dil_rad));
+        str_pat_vessels = strcat('Carcinomix', 'vessels', num2str(dil_rad));
+        
+        %Save DICOM images
+        PTKSaveImageAsDicom(lungs_dilated,dir_files_lungs, 'PTKImage', str_pat_lungs, true, reporting)
+        PTKSaveImageAsDicom(vessels_dilated,dir_files_vessels, 'PTKImage', str_pat_vessels, true, reporting)
+        
