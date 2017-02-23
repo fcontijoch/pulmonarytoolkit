@@ -54,13 +54,64 @@ for rad=1;
     saveas(f3,['Erosion_rad' num2str(radii(rad)) '.png']);
     fprintf('It took %.3f to compute radius of %.3f \n', toc, radii(rad))    
 end;
-%% Segmentation 
-tic 
+%% Segmentation Roshni trial
+%time this step for different dilation radii
+tic
+% dilation/ erosion defined in PTKGetLeftAndRightLungs
 global dil_rad
-dil_rad =5; 
+dil_rad = 5;
 lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
 vessels_dilated = dataset.GetResult('PTKVesselness');
+figure(1);
+    imagesc(squeeze(lungs_dilated.RawImage(:,:,100)));
+    f1=figure(1);
+    saveas(f1,['lungs_dil' num2str(dil_rad) '.png']);
+    figure(2);
+    imagesc(squeeze(vessels_dilated.RawImage(:,:,100)));
+    f2=figure(2);
+    saveas(f1,['vessels_dil' num2str(dil_rad) '.png']);
 toc
+
+%% Trying to loop the dil_rad
+global dil_rad
+dil_rad=0 
+for i=[5 5 0]
+    tic 
+    lungs_dilated = dataset.GetResult('PTKGetLeftAndRightLungs');
+    toc 
+    fprintf('It took %.3f to dilate lungs at radius %.3f \n', toc, dil_rad)
+    figure(1);
+    imagesc(squeeze(lungs_dilated.RawImage(:,:,100)));
+    f1=figure(1);
+    saveas(f1,['lungs_dil' num2str(dil_rad) '.png']);
+    tic
+    vessels_dilated = dataset.GetResult('PTKVesselness');
+    
+    v=imagesc(squeeze(vessels_dilated.RawImage(:,:,100)))
+    toc 
+    fprintf('It took %.3f to dilate vessels at radius %.3f \n', toc, dil_rad)
+    figure(2);
+    imagesc(squeeze(vessels_dilated.RawImage(:,:,100)));
+    f2=figure(2);
+    saveas(f1,['vessels_dil' num2str(dil_rad) '.png']);
+    dil_rad =i+dil_rad
+end
+    %%
+%make new file directory
+        dir_files_lungs= strcat('C:\Users\terre\Desktop\dilation output\lungs_data', num2str(dil_rad));
+        dir_files_vessels= strcat('C:\Users\terre\Desktop\dilation output\vessel_data', num2str(dil_rad));
+        mkdir('dir_files_lungs', 'dir_files_vessels');
+
+        %Patient ID
+        str_pat_lungs = strcat('Carcinomix', 'lungs', num2str(dil_rad));
+        str_pat_vessels = strcat('Carcinomix', 'vessels', num2str(dil_rad));
+        
+        %Save DICOM images
+        PTKSaveImageAsDicom(lungs_dilated,dir_files_lungs, 'PTKImage', str_pat_lungs, true, reporting)
+        PTKSaveImageAsDicom(vessels_dilated,dir_files_vessels, 'PTKImage', str_pat_vessels, true, reporting)
+
+
+
 
 %% Save DICOM Images 
 
@@ -76,7 +127,7 @@ PTKViewer(vessels2)
         %make new file directory
         dir_files_lungs= strcat('C:\Users\terre\Desktop\dilation output\lungs_data', num2str(dil_rad));
         dir_files_vessels= strcat('C:\Users\terre\Desktop\dilation output\vessel_data', num2str(dil_rad));
-        mkdir(dir_files_lungs, dir_files_vessels);
+        mkdir('dir_files_lungs', 'dir_files_vessels');
 
         %Patient ID
         str_pat_lungs = strcat('Carcinomix', 'lungs', num2str(dil_rad));
