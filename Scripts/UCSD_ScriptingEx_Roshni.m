@@ -3,7 +3,7 @@ clear; clc;
 PTKAddPaths;
 
 %% load dataset
-source_carcinomix = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
+source_carcinomix = '/Users/roshniravindran/Modeling/Datasets/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
 %%
 %make dataset and default reporting object
 <<<<<<< HEAD
@@ -25,7 +25,7 @@ dataset.DeleteCacheForThisDataset;
 tic
 % dilation/ erosion defined in PTKGetLeftAndRightLungs
 global dil_rad
-dil_rad = 5;
+dil_rad = 10;
 lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
 vessels_dilated = dataset.GetResult('PTKVesselness');
 toc
