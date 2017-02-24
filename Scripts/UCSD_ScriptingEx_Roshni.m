@@ -1,5 +1,4 @@
-function elapsedTime = dilationScript(sourcepath)
-clear; clc;
+function elapsedTime = UCSD_ScriptingEx_Roshni(sourcepath)
 PTKAddPaths;
 
 %% load dataset
@@ -18,6 +17,7 @@ elapsedTime = [];
 global dil_rad
 for i = [5, 10, 15, 20]
 dil_rad = i;
+
 tic
 lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
 vessels_dilated = dataset.GetResult('PTKVesselness');
