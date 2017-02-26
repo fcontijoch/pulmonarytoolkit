@@ -15,7 +15,7 @@ dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 
 %dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 dataset.DeleteCacheForThisDataset;
-
+reporting=CoreReporting();
 fprintf('cache removed \n')
 
 %% Segmentations
@@ -42,8 +42,8 @@ for rad=1;
 % figure for dilation
     figure(2);
     imagesc(Lungs_Dilation(:,:,100));
-    f2=figure(2);
-    saveas(f2,['Dilation_rad' num2str(radii(rad)) '.png']);
+    f3=figure(2);
+    saveas(f3,['Dilation_rad' num2str(radii(rad)) '.png']);
 % eroded image 
     Lungs_Erosion=imerode(Lungs_Dilation, strel('sphere', radii(rad)));
     fprintf('lungs eroded at radii %.3f \n', radii(rad))
@@ -69,33 +69,25 @@ figure(1);
     figure(2);
     imagesc(squeeze(vessels_dilated.RawImage(:,:,100)));
     f2=figure(2);
-    saveas(f1,['vessels_dil' num2str(dil_rad) '.png']);
+    saveas(f2,['vessels_dil' num2str(dil_rad) '.png']);
 toc
 
 %% Trying to loop the dil_rad
 global dil_rad
-dil_rad=0 
-for i=[5 5 0]
+for i=[5 10 15 20]
+dil_rad =i 
+
     tic 
     lungs_dilated = dataset.GetResult('PTKGetLeftAndRightLungs');
     toc 
     fprintf('It took %.3f to dilate lungs at radius %.3f \n', toc, dil_rad)
-    figure(1);
-    imagesc(squeeze(lungs_dilated.RawImage(:,:,100)));
-    f1=figure(1);
-    saveas(f1,['lungs_dil' num2str(dil_rad) '.png']);
+    
     tic
     vessels_dilated = dataset.GetResult('PTKVesselness');
-    
-    v=imagesc(squeeze(vessels_dilated.RawImage(:,:,100)))
     toc 
     fprintf('It took %.3f to dilate vessels at radius %.3f \n', toc, dil_rad)
-    figure(2);
-    imagesc(squeeze(vessels_dilated.RawImage(:,:,100)));
-    f2=figure(2);
-    saveas(f1,['vessels_dil' num2str(dil_rad) '.png']);
-    dil_rad =i+dil_rad
-end
+      
+
     %%
 %make new file directory
         dir_files_lungs= strcat('C:\Users\terre\Desktop\dilation output\lungs_data', num2str(dil_rad));
@@ -109,7 +101,7 @@ end
         %Save DICOM images
         PTKSaveImageAsDicom(lungs_dilated,dir_files_lungs, 'PTKImage', str_pat_lungs, true, reporting)
         PTKSaveImageAsDicom(vessels_dilated,dir_files_vessels, 'PTKImage', str_pat_vessels, true, reporting)
-
+end
 
 
 
