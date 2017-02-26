@@ -1,4 +1,4 @@
-function elapsedTime = UCSD_ScriptingEx_Roshni(sourcepath)
+function elapsedTime = UCSD_ScriptingEx_Roshni(source_name,sourcepath)
 PTKAddPaths;
 
 %% load dataset
@@ -26,14 +26,17 @@ elapsedTime = [elapsedTime toc];
 %% Save DICOM Images
 
         %make new file directory
-        dir_files_lungs= strcat('/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs', num2str(dil_rad));
-        dir_files_vessels= strcat('/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels', num2str(dil_rad));
+        dir_patient = strcat('/Users/roshniravindran/Modeling/pulmonarytoolkit_data/', source_name);
+        mkdir(dir_patient);
+        
+        dir_files_lungs= strcat(dir_patient,'lungs', num2str(dil_rad));
+        dir_files_vessels= strcat(dir_patient,'vessels', num2str(dil_rad));
         mkdir(dir_files_lungs);
         mkdir(dir_files_vessels);
 
         %Patient ID
-        str_pat_lungs = strcat('Carcinomix', 'lungs', num2str(dil_rad));
-        str_pat_vessels = strcat('Carcinomix', 'vessels', num2str(dil_rad));
+        str_pat_lungs = strcat(source_name, 'lungs', num2str(dil_rad));
+        str_pat_vessels = strcat(source_name, 'vessels', num2str(dil_rad));
         
         %Save DICOM images
         PTKSaveImageAsDicom(lungs_dilated,dir_files_lungs, 'PTKImage', str_pat_lungs, true, reporting)
