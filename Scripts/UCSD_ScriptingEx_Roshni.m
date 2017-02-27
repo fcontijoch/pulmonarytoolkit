@@ -18,14 +18,14 @@ global dil_rad
 dil_rad = rad;
 
 tic
-lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
+%lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
 vessels_dilated = dataset.GetResult('PTKVesselness');
+
 elapsedTime = [elapsedTime toc];
  
-SaveDicomImages_Roshni(source_name, lungs_dilated, vessels_dilated,reporting);
-
+PTKSaveImageAsDicom(vessels_dilated,'/Users/roshniravindran/Modeling/test','image',source_name,true,reporting); 
 %% visualize 2D
-%PTKViewer(vessels_dilated);
+PTKViewer(vessels_dilated);
 
    
 
