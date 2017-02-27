@@ -1,4 +1,4 @@
-function [lungs_dilated, vessels_dilated, elapsedTime] = UCSD_ScriptingEx_Roshni(source_name,sourcepath, rad)
+function [lungs_dilated, vessels_dilated, elapsedTime] = UCSD_ScriptingEx_Roshni(source_name,sourcepath)
 PTKAddPaths;
 
 %% load dataset
@@ -14,16 +14,12 @@ dataset.DeleteCacheForThisDataset;
 elapsedTime = [];
 
 % dilation/ erosion defined in PTKGetLeftAndRightLungs
-global dil_rad
-dil_rad = rad;
-
+global dil_r
 tic
 lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
 vessels_dilated = dataset.GetResult('PTKVesselness');
 elapsedTime = [elapsedTime toc];
  
-SaveDicomImages_Roshni(source_name, lungs_dilated, vessels_dilated,reporting);
-
 %% visualize 2D
 %PTKViewer(vessels_dilated);
 
