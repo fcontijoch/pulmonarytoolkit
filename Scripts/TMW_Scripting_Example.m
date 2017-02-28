@@ -76,13 +76,13 @@ fprintf('cache removed \n')
 %% Trying to loop the dil_rad from Roshni
 elapsedTime=[];
 global dil_rad
-for i=[1 5]
+for i=[1,5,10, 15, 20]
 dil_rad =i 
 
     tic 
     %dilation of lungs to include more vessels
     lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs'); 
-    fprintf('It took %.3f to dilate lungs at radius %.3f for patient: %s\n', toc, dil_rad, source_names)
+    fprintf('It took %.3f to dilate lungs at radius %.3f for patient: %s\n', toc, dil_rad, source_name)
     
     %erosion of lungs to original size
     vessels_dilated = dataset.GetResult('PTKVesselness');
@@ -95,7 +95,7 @@ dil_rad =i
     %%
 %make new file directory
         
-        dir_patient =strcat('C:\Users\terre\Desktop\SeniorDesign\dilation_output\', source_name);
+        dir_patient =strcat('C:\Users\terre\Desktop\SeniorDesign\dilation_output\', source_name, '\');
         mkdir(dir_patient);
         
         dir_files_lungs= strcat(dir_patient, 'lungs', num2str(dil_rad));
