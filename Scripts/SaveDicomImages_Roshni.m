@@ -3,7 +3,7 @@ function SaveDicomImages_Roshni(source_name, lungs_dilated, vessels_dilated, rep
 global dil_rad
 
         %make new file directory
-        dir_patient = strcat('/Users/roshniravindran/Modeling/data_recent/', source_name, '/');
+        dir_patient = strcat('/Users/roshniravindran/Modeling/data_morerecent/', source_name, '/');
         mkdir(dir_patient);
         
         str_lungs = strcat('lungs', num2str(dil_rad));

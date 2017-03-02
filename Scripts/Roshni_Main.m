@@ -6,10 +6,11 @@ path_names = {'/Users/roshniravindran/Modeling/Datasets/CARCINOMIX/CT THORACO-AB
 
 
 timeArray = {}; lungArray = {}; vesselArray = {};
-% Get specific patient dataset
+
+% Get parameters for each patient dataset and save them
 for i=1:numel(source_names)
 
-    for j = [5, 10, 15, 20]
+    for j = [0, 5, 10, 15, 20]
         [lungs_dilated,vessels_dilated,elapsedTime] = UCSD_ScriptingEx_Roshni(source_names{i},path_names{i}, j);
 
         timeArray{end+1} = elapsedTime;
@@ -17,4 +18,7 @@ for i=1:numel(source_names)
         vesselArray{end+1} = vessels_dilated;
     
     end
+    
+    save('PTKArrays.mat','timeArray','lungArray','vesselArray');
+    
 end

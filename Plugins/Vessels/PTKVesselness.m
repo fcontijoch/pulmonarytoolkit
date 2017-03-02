@@ -85,8 +85,9 @@ classdef PTKVesselness < PTKPlugin
             
             reporting.PushProgress;
 
-            %Roshni modified sigma_range
+            %modified sigma_range
             sigma_range = 1 : 0.75: 15;
+
             num_calculations = numel(sigma_range);
             vesselness = [];
             progress_index = 0;
@@ -105,7 +106,6 @@ classdef PTKVesselness < PTKPlugin
             end
             
             reporting.PopProgress;
-            
         end
                 
         function vesselness_wrapper = ComputeVesselnessPartImage(hessian_eigs_wrapper, voxel_size)
