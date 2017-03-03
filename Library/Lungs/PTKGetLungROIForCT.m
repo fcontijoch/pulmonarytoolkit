@@ -24,6 +24,10 @@ function lung_image = PTKGetLungROIForCT(lung_image, reporting)
     %     Distributed under the GNU GPL v3 licence. Please see website for details.
     %
 
+    global crop_flag;
+    if isempty(crop_flag)
+        crop_flag = true;
+    end
     
     if ~isa(lung_image, 'PTKImage')
         reporting.Error('PTKGetLungROIForCT:InputImageNotPTKImage', 'Requires a PTKImage as input');
@@ -37,7 +41,7 @@ function lung_image = PTKGetLungROIForCT(lung_image, reporting)
     
     reduced_image = lung_image.Copy;
     
-    reduced_image.RescaleToMaxSize(128);
+    reduced_image.RescaleToMaxSize(288);
 
     reporting.ShowProgress('Filtering image');
     reduced_image = PTKGaussianFilter(reduced_image, 1.0, true);
@@ -60,7 +64,10 @@ function lung_image = PTKGetLungROIForCT(lung_image, reporting)
     
     reporting.ShowProgress('Cropping image');    
     lung_image = lung_image.Copy;
+    
+    if (crop_flag)
     lung_image.Crop(start_crop, end_crop);
+    end
     
     reporting.CompleteProgress;
 end

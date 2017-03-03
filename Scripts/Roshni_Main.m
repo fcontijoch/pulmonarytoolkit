@@ -4,6 +4,8 @@ clc; clear;
 source_names = {'carcinomix', 'BPA_0003','BPA201701','cteph008'};
 path_names = {'/Users/roshniravindran/Modeling/Datasets/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5','/Users/roshniravindran/Modeling/Datasets/BPA_0003/15352527','/Users/roshniravindran/Modeling/Datasets/orig_imgs', '/Users/roshniravindran/Modeling/Datasets/orig_imgs 3'};
 
+%source_names = {'BPA_201702'};
+%path_names = {'/Users/roshniravindran/Modeling/Datasets/BPA_201702'};
 
 timeArray = {}; lungArray = {}; vesselArray = {};
 

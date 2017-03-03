@@ -24,9 +24,9 @@ vessels_dilated = dataset.GetResult('PTKVesselness');
 elapsedTime = [elapsedTime toc];
 
 lung_mask = GetLungMask_Roshni(lungs_dilated,dataset);
-%imagesc(lung_mask(:,:,110)); %view lung_mask at any arbitrary pt
+imagesc(lung_mask(:,:,110)); %view lung_mask at any arbitrary pt
 
-SaveDicomImages_Roshni(source_name, lungs_dilated,vessels_dilated,lung_mask,reporting);
+SaveDicomImages_Roshni(source_name, lungs_dilated,vessels_dilated,reporting);
 
 %% Vary Sigma
 % %for sigma_var = [1,1.25,1.5,1.75,2,3,4,5]
