@@ -17,6 +17,6 @@ switch class(img_orig)
 end
 
 lung_mask = bin_mask.*img_orig;
-%mask_dilated = lungs_dilated.ChangeRawImage(lung_mask);
-
+lungs_dilated.ChangeRawImage(lung_mask);
+PTKGetLungROIForCT(lungs_dilated,reporting);
 end

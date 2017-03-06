@@ -7,7 +7,7 @@ global dil_rad
         lung_mask_ptk.ChangeRawImage(lung_mask);
         
         %make new file directory
-        dir_patient = strcat('/Users/roshniravindran/Modeling/test/', source_name, '/');
+        dir_patient = strcat('/Users/roshniravindran/Modeling/data_mostrecent/', source_name, '/');
         mkdir(dir_patient);
         
         str_lungs = strcat('lungs', num2str(dil_rad));
