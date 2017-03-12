@@ -1,5 +1,5 @@
 %for the loop to run the dilation of the image 
-%function elapsedTime =TMW_Scripting_Example(source_name,sourcepath)
+%function elapsedTime =TMW_Scripting_Example(source_names,sourcepath)
 %%
 clear;clc;
 PTKAddPaths;
@@ -9,7 +9,7 @@ fprintf('PTKAddPath \n');
 ptk_main = PTKMain;
 %if you want to manually insert only one source_path, dont need if you are
 %trying to run the loop 
-source_path = 'C:\Users\terre\Desktop\CT THORACO-ABDO\ARTERIELLES - 5';
+source_path = 'C:\Users\Terrencewong\Desktop\CT THORACO-ABDO\ARTERIELLES - 5';
 fprintf('source_paths \n')
 %%
 %IMPORTANT! READ THIS: Please remove cache when re-running results
@@ -80,7 +80,7 @@ fprintf('cache removed \n')
 % %     saveas(f2,['vessels_dil' num2str(dil_rad) '.png']);
 % % toc
 % 
-% %% Trying to loop the dil_rad from Roshni
+%% Trying to loop the dil_rad from Roshni
 % elapsedTime=[];
 % global dil_rad
 % for i=[1,5,10, 15, 20]
@@ -89,7 +89,7 @@ fprintf('cache removed \n')
 %     tic 
 %     %dilation of lungs to include more vessels
 %     lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs'); 
-%     fprintf('It took %.3f to dilate lungs at radius %.3f for patient: %s\n', toc, dil_rad, source_name)
+%     fprintf('It took %.3f to dilate lungs at radius %.3f for patient: %s\n', toc, dil_rad, source_names)
 %     
 %     %erosion of lungs to original size
 %     vessels_dilated = dataset.GetResult('PTKVesselness');
@@ -102,17 +102,17 @@ fprintf('cache removed \n')
 %     %%
 % %make new file directory
 %         
-%         dir_patient =strcat('C:\Users\terre\Desktop\SeniorDesign\dilation_output\', source_name, '\');
+%         dir_patient =strcat('C:\Users\Terrencewong\Desktop\SeniorDesign\', source_names, '\');
 %         mkdir(dir_patient);
 %         
-%         dir_files_lungs= strcat(dir_patient, 'lungs', num2str(dil_rad));
-%         dir_files_vessels= strcat(dir_patient, 'vessels', num2str(dil_rad));
+%         dir_files_lungs= strcat(dir_patient, '1.5-2lungs', num2str(dil_rad));
+%         dir_files_vessels= strcat(dir_patient, '1.5-2vessels', num2str(dil_rad));
 %         mkdir(dir_files_lungs); 
 %         mkdir(dir_files_vessels);
 % 
 %         %Patient ID
-%         str_pat_lungs = strcat(source_name, 'lungs', num2str(dil_rad));
-%         str_pat_vessels = strcat(source_name, 'vessels', num2str(dil_rad));
+%         str_pat_lungs = strcat(source_names, 'lungs', num2str(dil_rad));
+%         str_pat_vessels = strcat(source_names, 'vessels', num2str(dil_rad));
 %         
 %         %Save DICOM images
 %         PTKSaveImageAsDicom(lungs_dilated,dir_files_lungs, 'PTKImage', str_pat_lungs, true, reporting)
@@ -134,7 +134,7 @@ fprintf('cache removed \n')
 % 
 %         %make new file directory
 %         dir_files_lungs= strcat('C:\Users\terre\Desktop\dilation output\lungs_data', num2str(dil_rad));
-%         dir_files_vessels= strcat('C:\U0sers\terre\Desktop\dilation output\vessel_data', num2str(dil_rad));
+% %         dir_files_vessels= strcat('C:\U0sers\terre\Desktop\dilation output\vessel_data', num2str(dil_rad));
 %         mkdir('dir_files_lungs', 'dir_files_vessels');
 % 
 %         %Patient ID
@@ -146,9 +146,23 @@ fprintf('cache removed \n')
 %         PTKSaveImageAsDicom(vessels_dilated,dir_files_vessels, 'PTKImage', str_pat_vessels, true, reporting)
 %         
 
-%% skeletoning trial 
+%%changing the sigma manually 
+ vessels = dataset.GetResult('PTKVesselness');
+ %make new file directory
+        dir_files_vessels= strcat('C:\Users\Terrencewong\Desktop\SeniorDesign\Sigma_Change\')
+        mkdir('dir_files_vessels1-1.2');
+
+        %Patient ID
+        
+        str_pat_vessels = strcat('Carcinomix', 'vessels', '1-1.2');
+        %Save DICOM images
+        PTKSaveImageAsDicom(vessels,dir_files_vessels, 'PTKImage', str_pat_vessels, true, reporting)
+ 
+ 
+ 
+ %% skeletoning trial 
 %skeleton = dataset.GetResult('PTKGetCentrelineFromAirways')
 %%
-vessels=dataset.GetResult('PTKVesselness')
+%vessels=dataset.GetResult('PTKVesselness')
 %%
-rawvessels=imagesc(vessels.RawImage(:,:,100))
+%rawvessels=imagesc(vessels.RawImage(:,:,100))

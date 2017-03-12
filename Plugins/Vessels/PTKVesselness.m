@@ -90,7 +90,7 @@ classdef PTKVesselness < PTKPlugin
 %                 sigma_range = 1:.75:15;
 %             end
             
-            sigma_range = 1:.75:15;
+            sigma_range = 1:.05:1.2;
             num_calculations = numel(sigma_range);
             vesselness = [];
             progress_index = 0;
