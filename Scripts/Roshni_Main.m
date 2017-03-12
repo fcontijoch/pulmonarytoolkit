@@ -21,6 +21,7 @@ for i=1:numel(source_names)
     
     end
     
-    save('PTKArrays.mat','timeArray','lungArray','vesselArray');
+    file_name = cat(source_names{i},'_','PTKArrays.mat');
+    save(fil_name,'timeArray','lungArray','vesselArray');
     
 end
