@@ -23,12 +23,6 @@ function lung_image = PTKGetLungROIForCT(lung_image, reporting)
     %     Author: Tom Doel, 2012.  www.tomdoel.com
     %     Distributed under the GNU GPL v3 licence. Please see website for details.
     %
-
-    % Roshni added option to bypass crop
-    global crop_flag;
-    if isempty(crop_flag)
-        crop_flag = true;
-    end
     
     if ~isa(lung_image, 'PTKImage')
         reporting.Error('PTKGetLungROIForCT:InputImageNotPTKImage', 'Requires a PTKImage as input');
@@ -66,9 +60,7 @@ function lung_image = PTKGetLungROIForCT(lung_image, reporting)
     reporting.ShowProgress('Cropping image');    
     lung_image = lung_image.Copy;
 
-    if (crop_flag)
-        lung_image.Crop(start_crop, end_crop);
-    end
+    lung_image.Crop(start_crop, end_crop);
     
     reporting.CompleteProgress;
 end

@@ -1,10 +1,11 @@
 function lung_mask = GetLungMask_Roshni(lungs_dilated,dataset)
 % make sure the global variable crop_flag is set to false.. undos the crop in the function
 % PTKGetLungROIForCT
+mask_dilated = lungs_dilated.Copy;
 
-img_dil = lungs_dilated.RawImage;
-
-data_orig = dataset.GetResult('PTKOriginalImage');
+%img_dil = lungs_dilated.RawImage;
+data_orig = dataset.GetResult('PTKLungROI', PTKContext.LungROI);
+%data_orig = dataset.GetResult('PTKOriginalImage');
 img_orig = data_orig.RawImage;
 
 switch class(img_orig)
@@ -17,6 +18,6 @@ switch class(img_orig)
 end
 
 lung_mask = bin_mask.*img_orig;
-%mask_dilated = lungs_dilated.ChangeRawImage(lung_mask);
+%mask_dilated.ChangeRawImage(lung_mask);
 
 end

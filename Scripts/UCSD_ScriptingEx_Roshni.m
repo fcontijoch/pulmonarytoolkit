@@ -14,8 +14,8 @@ dataset.DeleteCacheForThisDataset;
 elapsedTime = [];
 
 % dilation/ erosion defined in PTKGetLeftAndRightLungs
-global dil_rad; global sigma_var; global crop_flag;
-dil_rad = rad; crop_flag = false;
+global dil_rad; global sigma_var; 
+dil_rad = rad;
 
 
 tic
@@ -24,6 +24,7 @@ vessels_dilated = dataset.GetResult('PTKVesselness');
 elapsedTime = [elapsedTime toc];
 
 lung_mask = GetLungMask_Roshni(lungs_dilated,dataset);
+%lung_mask = mask_dilated.RawImage;
 %imagesc(lung_mask(:,:,110)); %view lung_mask at any arbitrary pt
 
 SaveDicomImages_Roshni(source_name, lungs_dilated,vessels_dilated,lung_mask,reporting);
