@@ -23,7 +23,6 @@ function lung_image = PTKGetLungROIForCT(lung_image, reporting)
     %     Author: Tom Doel, 2012.  www.tomdoel.com
     %     Distributed under the GNU GPL v3 licence. Please see website for details.
     %
-
     
     if ~isa(lung_image, 'PTKImage')
         reporting.Error('PTKGetLungROIForCT:InputImageNotPTKImage', 'Requires a PTKImage as input');
@@ -37,7 +36,7 @@ function lung_image = PTKGetLungROIForCT(lung_image, reporting)
     
     reduced_image = lung_image.Copy;
     
-    reduced_image.RescaleToMaxSize(128);
+    reduced_image.RescaleToMaxSize(288);
 
     reporting.ShowProgress('Filtering image');
     reduced_image = PTKGaussianFilter(reduced_image, 1.0, true);
@@ -60,6 +59,7 @@ function lung_image = PTKGetLungROIForCT(lung_image, reporting)
     
     reporting.ShowProgress('Cropping image');    
     lung_image = lung_image.Copy;
+
     lung_image.Crop(start_crop, end_crop);
     
     reporting.CompleteProgress;

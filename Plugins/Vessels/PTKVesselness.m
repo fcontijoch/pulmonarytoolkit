@@ -26,7 +26,6 @@ classdef PTKVesselness < PTKPlugin
     %     Author: Tom Doel, 2012.  www.tomdoel.com
     %     Distributed under the GNU GPL v3 licence. Please see website for details.
     %
-
     properties
         ButtonText = 'Vesselness'
         ToolTip = 'Shows the multiscale vesselness filter for detecting blood vessels'
@@ -82,40 +81,37 @@ classdef PTKVesselness < PTKPlugin
     methods (Static, Access = private)
         
         function vesselness = ComputeVesselness(image_data, reporting, is_left_lung)
-            
+        global sigma_var
+        
             reporting.PushProgress;
-            global ves_rad
-            
-            sigma = ves_rad; vesselness =[]; progress_index = 0;mask= [];
-            disp(['Sigma value = ' num2str(sigma)])
-            vesselness_next = PTKImageDividerHessian(image_data.Copy, @PTKVesselness.ComputeVesselnessPartImage, mask, sigma, [], false, false, is_left_lung, reporting);
-            vesselness_next.ChangeRawImage(100*vesselness_next.RawImage);
-            vesselness = vesselness_next.Copy;
-            
-            
+           
+  
+            %modified sigma_range
+             if isempty(sigma_var)
+                sigma_var = 0;
+             end
 
-            %Roshni modified sigma_range
-            %sigma_range = 0.5 : 0.5 :20;
-            %num_calculations = numel(sigma_range);
-            %vesselness = [];
+            %sigma_range = 1:.75:15;
+            num_calculations = numel(sigma_var);
+
+            vesselness = [];
             %progress_index = 0;
-           % for sigma = sigma_range
+            for sigma = sigma_var
                 %reporting.UpdateProgressStage(progress_index, num_calculations);
                 %progress_index = progress_index + 1;
                 
-                %mask = [];
-                %vesselness_next = PTKImageDividerHessian(image_data.Copy, @PTKVesselness.ComputeVesselnessPartImage, mask, sigma, [], false, false, is_left_lung, reporting);
-                %vesselness_next.ChangeRawImage(100*vesselness_next.RawImage);
-                %if isempty(vesselness)
-                 %   vesselness =  vesselness_next.Copy;
-                %else
-                 %   vesselness.ChangeRawImage(max(vesselness.RawImage, vesselness_next.RawImage));
-                %end
+                mask = [];
+                vesselness_next = PTKImageDividerHessian(image_data.Copy, @PTKVesselness.ComputeVesselnessPartImage, mask, sigma_var, [], false, false, is_left_lung, reporting);
+                vesselness_next.ChangeRawImage(100*vesselness_next.RawImage);
                 
-       % end
-            
-           % reporting.PopProgress;
-            
+                if isempty(vesselness)
+                    vesselness =  vesselness_next.Copy;
+                else
+                    vesselness.ChangeRawImage(max(vesselness.RawImage, vesselness_next.RawImage));
+                end
+            end
+            reporting.PopProgress;
+
         end
                 
         function vesselness_wrapper = ComputeVesselnessPartImage(hessian_eigs_wrapper, voxel_size)

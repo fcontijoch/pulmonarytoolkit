@@ -1,13 +1,14 @@
-
-clear; clc;
+function [lungs_dilated, vessels_dilated, elapsedTime] = UCSD_ScriptingEx_Roshni(source_name,sourcepath, rad)
 PTKAddPaths;
 
 %% load dataset
-source_carcinomix = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
-%%
 %make dataset and default reporting object
+<<<<<<< HEAD
 
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_carcinomix);
+=======
+file_infos = PTKDicomUtilities.GetListOfDicomFiles(sourcepath);
+>>>>>>> 7d626494e2a1ba00b26d2f6d8c633e8e4f351313
 ptk_main = PTKMain;
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 reporting = CoreReporting();
@@ -15,32 +16,36 @@ reporting = CoreReporting();
 dataset.DeleteCacheForThisDataset;
 
 %% Segmentation
-%time this step for different dilation radii
-tic
+elapsedTime = [];
+
 % dilation/ erosion defined in PTKGetLeftAndRightLungs
-global dil_rad
-dil_rad = 5;
+global dil_rad; global sigma_var; 
+dil_rad = rad;sigma_var = .1;
+
+
+tic
 lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
 vessels_dilated = dataset.GetResult('PTKVesselness');
-toc
+elapsedTime = [elapsedTime toc];
 
-%% Save DICOM Images
+lung_mask = GetLungMask_Roshni(lungs_dilated,dataset);
+%lung_mask = mask_dilated.RawImage;
+%imagesc(lung_mask(:,:,110)); %view lung_mask at any arbitrary pt
 
-        %make new file directory
-        dir_files_lungs= strcat('/Users/roshniravindran/Modeling/pulmonarytoolkit_data/lungs', num2str(dil_rad));
-        dir_files_vessels= strcat('/Users/roshniravindran/Modeling/pulmonarytoolkit_data/vessels', num2str(dil_rad));
-        mkdir(dir_files_lungs, dir_files_vessels);
+SaveDicomImages_Roshni(source_name, lungs_dilated,vessels_dilated,lung_mask,reporting);
 
-        %Patient ID
-        str_pat_lungs = strcat('Carcinomix', 'lungs', num2str(dil_rad));
-        str_pat_vessels = strcat('Carcinomix', 'vessels', num2str(dil_rad));
-        
-        %Save DICOM images
-        PTKSaveImageAsDicom(lungs_dilated,dir_files_lungs, 'PTKImage', str_pat_lungs, true, reporting)
-        PTKSaveImageAsDicom(vessels_dilated,dir_files_vessels, 'PTKImage', str_pat_vessels, true, reporting)
-        
+%% Vary Sigma
+% %for sigma_var = [1,1.25,1.5,1.75,2,3,4,5]
+%     dataset.DeleteCacheForThisDataset;
+%     vessels_dilated = dataset.GetResult('PTKVesselness');
+%     
+%     PTKViewer(vessels_dilated);
+%     SaveDicomImages_Roshni(source_name, lungs_dilated,vessels_dilated,reporting);
+% 
+% end
+
 %% visualize 2D
-%PTKViewer(lungs_dilated);
+%PTKViewer(vessels_dilated);
 
    
 
