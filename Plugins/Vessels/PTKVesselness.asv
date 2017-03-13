@@ -84,16 +84,49 @@ classdef PTKVesselness < PTKPlugin
         global sigma_var
         
             reporting.PushProgress;
-           
-  
+            global ves_rad
+            
+            sigma = ves_rad; vesselness =[]; progress_index = 0;mask= [];
+            disp(['Sigma value = ' num2str(sigma)])
+            vesselness_next = PTKImageDividerHessian(image_data.Copy, @PTKVesselness.ComputeVesselnessPartImage, mask, sigma, [], false, false, is_left_lung, reporting);
+            vesselness_next.ChangeRawImage(100*vesselness_next.RawImage);
+            vesselness = vesselness_next.Copy;
+            
+            
+
+            %Roshni modified sigma_range
+            %sigma_range = 0.5 : 0.5 :20;
+            %num_calculations = numel(sigma_range);
+            %vesselness = [];
+            %progress_index = 0;
+           % for sigma = sigma_range
+                %reporting.UpdateProgressStage(progress_index, num_calculations);
+                %progress_index = progress_index + 1;
+                
+                %mask = [];
+                %vesselness_next = PTKImageDividerHessian(image_data.Copy, @PTKVesselness.ComputeVesselnessPartImage, mask, sigma, [], false, false, is_left_lung, reporting);
+                %vesselness_next.ChangeRawImage(100*vesselness_next.RawImage);
+                %if isempty(vesselness)
+                 %   vesselness =  vesselness_next.Copy;
+                %else
+                 %   vesselness.ChangeRawImage(max(vesselness.RawImage, vesselness_next.RawImage));
+                %end
+                
+       % end
+            
+           % reporting.PopProgress;
+            
+=======
             %modified sigma_range
-             if isempty(sigma_var)
-                sigma_var = 0;
+             if isempty(sigma_var) || (sigma_var== 0)
+                mask = [];
+                vesselness_next = PTKImageDividerHessian(image_data.Copy, @PTKVesselness.ComputeVesselnessPartImage, mask, sigma_var, [], false, false, is_left_lung, reporting);
+                vesselness_next.ChangeRawImage(100*vesselness_next.RawImage);
+                
              end
 
             %sigma_range = 1:.75:15;
-            num_calculations = numel(sigma_var);
-
+            %num_calculations = numel(sigma_range);
 
             vesselness = [];
             %progress_index = 0;
@@ -112,7 +145,7 @@ classdef PTKVesselness < PTKPlugin
                 end
             end
             reporting.PopProgress;
-
+>>>>>>> 7d626494e2a1ba00b26d2f6d8c633e8e4f351313
         end
                 
         function vesselness_wrapper = ComputeVesselnessPartImage(hessian_eigs_wrapper, voxel_size)
