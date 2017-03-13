@@ -1,6 +1,9 @@
 clc;clear;
 PTKAddPaths;
-
+%%
+global dil_rad
+dil_rad =15;
+%%
 global ves_rad
 for ves_rad = 0.1:0.1:0.9; %the range here should be determined based on Terrence's and Zhennong's results
 
@@ -25,8 +28,6 @@ fprintf('c')
 %time this step for different dilation radii
 
 % dilation/ erosion defined in PTKGetLeftAndRightLungs
-global dil_rad
-dil_rad =15;
 %lungs_dilated = dataset.GetResult('PTKLeftAndRightLungs');
 vessels_dilated = dataset.GetResult('PTKVesselness');
 
