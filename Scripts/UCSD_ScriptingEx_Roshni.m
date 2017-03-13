@@ -6,14 +6,8 @@ PTKAddPaths;
 source_carcinomix = '/Users/roshniravindran/Downloads/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5';
 %%
 %make dataset and default reporting object
-<<<<<<< HEAD
-file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_path);
 
-
-
-=======
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_carcinomix);
->>>>>>> 050a7d31d9f03cd76f72f25de06226ccbd4ccb12
 ptk_main = PTKMain;
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 reporting = CoreReporting();
