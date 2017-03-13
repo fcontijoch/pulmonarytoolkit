@@ -87,10 +87,7 @@ classdef PTKVesselness < PTKPlugin
 
             %modified sigma_range
              if isempty(sigma_var) || (sigma_var== 0)
-                mask = [];
-                vesselness_next = PTKImageDividerHessian(image_data.Copy, @PTKVesselness.ComputeVesselnessPartImage, mask, sigma_var, [], false, false, is_left_lung, reporting);
-                vesselness_next.ChangeRawImage(100*vesselness_next.RawImage);
-                
+                   %sigma_range = 1:.75:15;
              end
             
             %sigma_range = 1:.75:15;
@@ -111,6 +108,8 @@ classdef PTKVesselness < PTKPlugin
                     vesselness.ChangeRawImage(max(vesselness.RawImage, vesselness_next.RawImage));
                 end
             end
+
+            fprintf('sigma value ' + sigma_var + '/n');
             reporting.PopProgress;
         end
                 

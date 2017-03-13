@@ -15,7 +15,7 @@ elapsedTime = [];
 
 % dilation/ erosion defined in PTKGetLeftAndRightLungs
 global dil_rad; global sigma_var; 
-dil_rad = rad;
+dil_rad = rad;sigma_var = .1;
 
 
 tic
