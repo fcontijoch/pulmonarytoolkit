@@ -93,7 +93,7 @@ classdef PTKVesselness < PTKPlugin
 
             %sigma_range = 1:.75:15;
             num_calculations = numel(sigma_var);
-
+            
 
             vesselness = [];
             %progress_index = 0;
