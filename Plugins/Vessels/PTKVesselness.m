@@ -92,9 +92,10 @@ classdef PTKVesselness < PTKPlugin
                 vesselness_next.ChangeRawImage(100*vesselness_next.RawImage);
                 
              end
-            
+
             %sigma_range = 1:.75:15;
             %num_calculations = numel(sigma_range);
+
             vesselness = [];
             %progress_index = 0;
             for sigma = sigma_var
