@@ -3,12 +3,8 @@ PTKAddPaths;
 
 %% load dataset
 %make dataset and default reporting object
-<<<<<<< HEAD
-
-file_infos = PTKDicomUtilities.GetListOfDicomFiles(source_carcinomix);
-=======
 file_infos = PTKDicomUtilities.GetListOfDicomFiles(sourcepath);
->>>>>>> 7d626494e2a1ba00b26d2f6d8c633e8e4f351313
+
 ptk_main = PTKMain;
 dataset = ptk_main.CreateDatasetFromInfo(file_infos);
 reporting = CoreReporting();

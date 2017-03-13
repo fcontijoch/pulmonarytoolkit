@@ -3,7 +3,7 @@ function lung_mask = GetLungMask_Roshni(lungs_dilated,dataset)
 % PTKGetLungROIForCT
 mask_dilated = lungs_dilated.Copy;
 
-%img_dil = lungs_dilated.RawImage;
+img_dil = lungs_dilated.RawImage;
 data_orig = dataset.GetResult('PTKLungROI', PTKContext.LungROI);
 %data_orig = dataset.GetResult('PTKOriginalImage');
 img_orig = data_orig.RawImage;

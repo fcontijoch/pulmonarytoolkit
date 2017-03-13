@@ -1,11 +1,12 @@
-function SaveDicomImages_Roshni(source_name, lungs_dilated, vessels_dilated, mask_dilated,reporting)
+function SaveDicomImages_Roshni(source_name, lungs_dilated, vessels_dilated, lung_mask,reporting)
 %% Save DICOM Images
 global dil_rad
+global sigma_var
         %change lung_mask into PTKImage or PTKDicomImage
         %lung_mask_ptk = PTKDicomImage.CreateDicomImageFromMetadata(lung_mask);
         
-        %mask_dilated = vessels_dilated;
-        %mask_dilated.ChangeRawImage(lung_mask);
+        mask_dilated = vessels_dilated;
+        mask_dilated.ChangeRawImage(lung_mask);
         
         %make new file directory
         dir_patient = strcat('/Users/roshniravindran/Modeling/data_mostrecent/', source_name, '/');
@@ -15,7 +16,7 @@ global dil_rad
         mkdir(dir_patient,str_lungs);
         path_lungs = strcat(dir_patient,str_lungs);
         
-        str_vessels = strcat('vessels', num2str(dil_rad));
+        str_vessels = strcat('vessels', num2str(dil_rad),'/',num2str(sigma_var));
         mkdir(dir_patient,str_vessels);
         path_vessels = strcat(dir_patient,str_vessels);
 
