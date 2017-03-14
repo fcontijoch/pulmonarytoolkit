@@ -1,8 +1,8 @@
 clc; clear;
 
 %% Load Patient Datasets
-source_names = {'carcinomix', 'BPA_0003','BPA201701','cteph008'};
-path_names = {'/Users/roshniravindran/Modeling/Datasets/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5','/Users/roshniravindran/Modeling/Datasets/BPA_0003/15352527','/Users/roshniravindran/Modeling/Datasets/orig_imgs', '/Users/roshniravindran/Modeling/Datasets/orig_imgs 3'};
+source_names = {'BPA_0003','BPA201701','cteph008'};
+path_names = {'/Users/roshniravindran/Modeling/Datasets/BPA_0003/15352527','/Users/roshniravindran/Modeling/Datasets/orig_imgs', '/Users/roshniravindran/Modeling/Datasets/orig_imgs 3'};
 
 %source_names = {'carcinomix'};
 %path_names = {'/Users/roshniravindran/Modeling/Datasets/CARCINOMIX/CT THORACO-ABDO/ARTERIELLES - 5'};
@@ -21,7 +21,7 @@ for i=1:numel(source_names)
     
     end
     
-    file_name = cat(source_names{i},'_','PTKArrays.mat');
-    save(fil_name,'timeArray','lungArray','vesselArray');
+    file_name = strcat(source_names{i},'_','PTKArrays.mat');
+    save(file_name,'timeArray','lungArray','vesselArray');
     
 end
