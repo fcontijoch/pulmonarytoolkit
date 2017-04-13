@@ -161,10 +161,15 @@ fprintf('cache removed \n')
  
  
  %% skeletoning trial 
-vessels=dataset.GetResult('PTKVesselness')
+vessels=dataset.GetResult('PTKVesselness');
 save vessels %makes it into a mat so that the external 3D skeletonization program can be ran 
 %https://www.mathworks.com/matlabcentral/fileexchange/43400-skeleton3d
 skel=Skeleton3D(vessels.RawImage); 
+ChangeRawImage(vessels, skel)
+dir_files_vessels_skel=strcat('C:\Users\Terrencewong\Desktop\Skel');
+mkdir('skel');
+str_pat_vessels_skel =strcat('Carcinomix', 'skel');
+PTKSaveImageAsDicom(skel, dir_files_vessels_skel, 'PTKImage', str_pat_vessels_skel, true, reporting)
 
 %%
 %rawvessels=imagesc(vessels.RawImage(:,:,100))

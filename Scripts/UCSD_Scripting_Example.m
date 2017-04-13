@@ -1,4 +1,4 @@
-clear; clc;
+hclear; clc;
 PTKAddPaths;
 fprintf('PTKAddPath \n');
 
