@@ -147,22 +147,24 @@ fprintf('cache removed \n')
 %         
 
 %%changing the sigma manually 
- vessels = dataset.GetResult('PTKVesselness');
+ %vessels = dataset.GetResult('PTKVesselness');
  %make new file directory
-        dir_files_vessels= strcat('C:\Users\Terrencewong\Desktop\SeniorDesign\Sigma_Change\')
-        mkdir('dir_files_vessels1-1.2');
+       % dir_files_vessels= strcat('C:\Users\Terrencewong\Desktop\SeniorDesign\Sigma_Change\')
+       % mkdir('dir_files_vessels1-1.2');
 
         %Patient ID
         
-        str_pat_vessels = strcat('Carcinomix', 'vessels', '1-1.2');
+      %  str_pat_vessels = strcat('Carcinomix', 'vessels', '1-1.2');
         %Save DICOM images
-        PTKSaveImageAsDicom(vessels,dir_files_vessels, 'PTKImage', str_pat_vessels, true, reporting)
+       % PTKSaveImageAsDicom(vessels,dir_files_vessels, 'PTKImage', str_pat_vessels, true, reporting)
  
  
  
  %% skeletoning trial 
-%skeleton = dataset.GetResult('PTKGetCentrelineFromAirways')
-%%
-%vessels=dataset.GetResult('PTKVesselness')
+vessels=dataset.GetResult('PTKVesselness')
+save vessels %makes it into a mat so that the external 3D skeletonization program can be ran 
+%https://www.mathworks.com/matlabcentral/fileexchange/43400-skeleton3d
+skel=Skeleton3D(vessels.RawImage); 
+
 %%
 %rawvessels=imagesc(vessels.RawImage(:,:,100))
