@@ -12,7 +12,7 @@ timeArray = {}; lungArray = {}; vesselArray = {};
 % Get parameters for each patient dataset and save them
 for i=1:numel(source_names)
 
-    for j = [0, 5, 10, 15]
+    for j= [0, 5, 10, 15]
         [lungs_dilated,vessels_dilated,elapsedTime] = UCSD_ScriptingEx_Roshni(source_names{i},path_names{i}, j);
 
         timeArray{end+1} = elapsedTime;
@@ -24,4 +24,5 @@ for i=1:numel(source_names)
     file_name = strcat(source_names{i},'_','PTKArrays.mat');
     save(file_name,'timeArray','lungArray','vesselArray');
     
+    timeArray = {}; lungArray = {}; vesselArray = {};
 end

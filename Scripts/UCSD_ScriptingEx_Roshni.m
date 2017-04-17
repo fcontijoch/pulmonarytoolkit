@@ -28,7 +28,7 @@ elapsedTime = [elapsedTime toc];
 %SaveDicomImages_Roshni(source_name,[],vessels_dilated,[],reporting);
 
 %% Vary Sigma
-for sigma_var = .1:.2:3
+for sigma_var = 2.9
      dataset.DeleteCacheForThisDataset;
      vessels_dilated = dataset.GetResult('PTKVesselness');
      %     PTKViewer(vessels_dilated);
