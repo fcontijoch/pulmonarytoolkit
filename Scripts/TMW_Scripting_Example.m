@@ -164,12 +164,43 @@ fprintf('cache removed \n')
 vessels=dataset.GetResult('PTKVesselness');
 save vessels %makes it into a mat so that the external 3D skeletonization program can be ran 
 %https://www.mathworks.com/matlabcentral/fileexchange/43400-skeleton3d
-skel=Skeleton3D(vessels.RawImage); 
-ChangeRawImage(vessels, skel)
-dir_files_vessels_skel=strcat('C:\Users\Terrencewong\Desktop\Skel');
+%need to change 
+vesselsraw=vessels.RawImage;
+
+skel=Skeleton3D(vesselsraw); 
+skel_dilated=vessels.Copy; 
+skel_dilated.ChangeRawImage(skel); 
+%% saving images 
+%making directatory for the new skel images
+dir_files_vessels_skel=strcat('C:\Users\Terrencewong\Desktop\Skel\');
 mkdir('skel');
 str_pat_vessels_skel =strcat('Carcinomix', 'skel');
-PTKSaveImageAsDicom(skel, dir_files_vessels_skel, 'PTKImage', str_pat_vessels_skel, true, reporting)
-
+PTKSaveImageAsDicom(skel_dilated, dir_files_vessels_skel, 'PTKImage', str_pat_vessels_skel, false, reporting);
+%save original image for comparison to the skel 
+dir_files_vessels=strcat('C:\Users\Terrencewong\Desktop\Skel\');
+str_pat_vessels=strcat('Carcinomix', 'vessels');
+PTKSaveImageAsDicom(vessels, dir_files_vessels, 'PTKImage', str_pat_vessels, false, reporting);
 %%
-%rawvessels=imagesc(vessels.RawImage(:,:,100))
+vessels=dataset.GetResult('PTKVesselness'); 
+vesselsraw=vessels.RawImage;
+%%
+skel = Skeleton3D(vesselsraw);
+
+figure();
+col=[.7 .7 .8];
+hiso = patch(isosurface(vesselsraw,0),'FaceColor',col,'EdgeColor','none');
+hiso2 = patch(isocaps(vesselsraw,0),'FaceColor',col,'EdgeColor','none');
+axis equal;axis off;
+lighting phong;
+isonormals(vesselsraw,hiso);
+alpha(0.5);
+set(gca,'DataAspectRatio',[1 1 1])
+camlight;
+hold on;
+w=size(skel,1);
+l=size(skel,2);
+h=size(skel,3);
+[x,y,z]=ind2sub([w,l,h],find(skel(:)));
+plot3(y,x,z,'square','Markersize',4,'MarkerFaceColor','r','Color','r');            
+set(gcf,'Color','white');
+view(140,80)
