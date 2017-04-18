@@ -47,14 +47,14 @@ end
         end
         
         if(flag_mask)
-            mask_dilated = lungs_dilated;
-            mask_dilated.ChangeRawImage(lung_mask);
+            mask_dilated = lung_mask;
+            %mask_dilated.ChangeRawImage(lung_mask);
         
             str_mask = strcat('mask',num2str(dil_rad));
             mkdir(dir_patient,str_mask);
             path_mask = strcat(dir_patient,str_mask);
             PTKSaveImageAsDicom(mask_dilated,path_mask,'PTKImage',source_name,false,reporting)
-            fprintf('DICOM Mask \n');
+            %fprintf('DICOM Mask \n');
 
         end
         

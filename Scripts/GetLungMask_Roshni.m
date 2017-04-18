@@ -18,6 +18,6 @@ switch class(img_orig)
 end
 
 lung_mask = bin_mask.*img_orig;
-%mask_dilated.ChangeRawImage(lung_mask);
+mask_dilated.ChangeRawImage(lung_mask);
 
 end

@@ -37,7 +37,6 @@ end
 
  %% Lung Mask
  lung_mask = GetLungMask_Roshni(lungs_dilated,dataset);
-%lung_mask = mask_dilated.RawImage;
 %imagesc(lung_mask(:,:,110)); %view lung_mask at any arbitrary pt
 
 %% Save Images
