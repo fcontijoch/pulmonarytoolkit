@@ -96,13 +96,14 @@ classdef PTKVesselness < PTKPlugin
             
 
             vesselness = [];
+
             %progress_index = 0;
             for sigma = 0.5:0.05:3 
                 %reporting.UpdateProgressStage(progress_index, num_calculations);
                 %progress_index = progress_index + 1;
-                
+
                 mask = [];
-                vesselness_next = PTKImageDividerHessian(image_data.Copy, @PTKVesselness.ComputeVesselnessPartImage, mask, sigma_var, [], false, false, is_left_lung, reporting);
+                vesselness_next = PTKImageDividerHessian(image_data.Copy, @PTKVesselness.ComputeVesselnessPartImage, mask, sigma, [], false, false, is_left_lung, reporting);
                 vesselness_next.ChangeRawImage(100*vesselness_next.RawImage);
                 
                 if isempty(vesselness)
