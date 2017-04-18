@@ -162,28 +162,34 @@ fprintf('cache removed \n')
  
  %% skeletoning trial 
 vessels=dataset.GetResult('PTKVesselness');
+BWvessels=im2bw(vessels)
+
 save vessels %makes it into a mat so that the external 3D skeletonization program can be ran 
 %https://www.mathworks.com/matlabcentral/fileexchange/43400-skeleton3d
-%need to change 
+%need to change to binary image 
 vesselsraw=vessels.RawImage;
+vessels_bin=vessels_raw>0; 
 
-skel=Skeleton3D(vesselsraw); 
-skel_dilated=vessels.Copy; 
-skel_dilated.ChangeRawImage(skel); 
+skel=Skeleton3D(vessels_bin); 
+%%
+vessels_skel=vessels.Copy; 
+vessels_skel.ChangeRawImage(skel); 
 %% saving images 
 %making directatory for the new skel images
-dir_files_vessels_skel=strcat('C:\Users\Terrencewong\Desktop\Skel\');
-mkdir('skel');
+dir_files_vessels_skel=strcat('C:\Users\Terrencewong\Desktop\Skel\', 'skel');
+mkdir(dir_files_vessels_skel);
 str_pat_vessels_skel =strcat('Carcinomix', 'skel');
-PTKSaveImageAsDicom(skel_dilated, dir_files_vessels_skel, 'PTKImage', str_pat_vessels_skel, false, reporting);
+PTKSaveImageAsDicom(vessels_skel, dir_files_vessels_skel, 'vessels_skel', str_pat_vessels_skel, false, reporting);
+%%
 %save original image for comparison to the skel 
-dir_files_vessels=strcat('C:\Users\Terrencewong\Desktop\Skel\');
-str_pat_vessels=strcat('Carcinomix', 'vessels');
-PTKSaveImageAsDicom(vessels, dir_files_vessels, 'PTKImage', str_pat_vessels, false, reporting);
+dir_files_vessels_orig=strcat('C:\Users\Terrencewong\Desktop\Skel\', 'orig');
+mkdir(dir_files_vessels_orig)
+str_pat_vessels_orig=strcat('Carcinomix', 'vessels');
+PTKSaveImageAsDicom(vessels, dir_files_vessels_orig, 'vessels_orig', str_pat_vessels_orig, false, reporting);
 %%
 vessels=dataset.GetResult('PTKVesselness'); 
 vesselsraw=vessels.RawImage;
-%%
+%% using the TestSkeleton3D 
 skel = Skeleton3D(vesselsraw);
 
 figure();

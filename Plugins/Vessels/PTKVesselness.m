@@ -97,7 +97,7 @@ classdef PTKVesselness < PTKPlugin
 
             vesselness = [];
             %progress_index = 0;
-            for sigma = sigma_var
+            for sigma = 0.5:0.05:3 
                 %reporting.UpdateProgressStage(progress_index, num_calculations);
                 %progress_index = progress_index + 1;
                 
