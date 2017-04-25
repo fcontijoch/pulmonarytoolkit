@@ -160,15 +160,23 @@ fprintf('cache removed \n')
  
  
  
- %% skeletoning trial 
-vessels=dataset.GetResult('PTKVesselness');
-BWvessels=im2bw(vessels)
-
-save vessels %makes it into a mat so that the external 3D skeletonization program can be ran 
+ %% skeletoning trial
+ files =dir('0.5')
+ for i =1:numel(files) 
+ end
+ 
+%%
 %https://www.mathworks.com/matlabcentral/fileexchange/43400-skeleton3d
 %need to change to binary image 
-vesselsraw=vessels.RawImage;
+%%
+global dil_rad
+dil_rad = 15;
+vessels=dataset.GetResult('PTKVesselness');
+vessels_raw=vessels.RawImage;
+
+%%
 vessels_bin=vessels_raw>0; 
+save 'vessels_info'
 
 skel=Skeleton3D(vessels_bin); 
 %%
@@ -190,15 +198,15 @@ PTKSaveImageAsDicom(vessels, dir_files_vessels_orig, 'vessels_orig', str_pat_ves
 vessels=dataset.GetResult('PTKVesselness'); 
 vesselsraw=vessels.RawImage;
 %% using the TestSkeleton3D 
-skel = Skeleton3D(vesselsraw);
+skel = Skeleton3D(vessels_raw);
 
 figure();
 col=[.7 .7 .8];
-hiso = patch(isosurface(vesselsraw,0),'FaceColor',col,'EdgeColor','none');
-hiso2 = patch(isocaps(vesselsraw,0),'FaceColor',col,'EdgeColor','none');
+hiso = patch(isosurface(vessels_raw,0),'FaceColor',col,'EdgeColor','none');
+hiso2 = patch(isocaps(vessels_raw,0),'FaceColor',col,'EdgeColor','none');
 axis equal;axis off;
 lighting phong;
-isonormals(vesselsraw,hiso);
+isonormals(vessels_raw,hiso);
 alpha(0.5);
 set(gca,'DataAspectRatio',[1 1 1])
 camlight;
