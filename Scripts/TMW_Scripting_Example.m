@@ -176,10 +176,15 @@ vessels_raw=vessels.RawImage;
 
 %%
 vessels_bin=vessels_raw>0; 
-save 'vessels_info'
 
 skel=Skeleton3D(vessels_bin); 
+save 'vessels_info'
 %%
+Image3=skel*10000; 
+%increases the threshold of the image to be easily seen in osirix  
+PTKImage3=vessels.Copy; 
+PTKImage3.ChangeRawImage(Image3); 
+
 vessels_skel=vessels.Copy; 
 vessels_skel.ChangeRawImage(skel); 
 %% saving images 
@@ -188,6 +193,11 @@ dir_files_vessels_skel=strcat('C:\Users\Terrencewong\Desktop\Skel\', 'skel');
 mkdir(dir_files_vessels_skel);
 str_pat_vessels_skel =strcat('Carcinomix', 'skel');
 PTKSaveImageAsDicom(vessels_skel, dir_files_vessels_skel, 'vessels_skel', str_pat_vessels_skel, false, reporting);
+%save Image3 which is 1000*skel (trying to make it easier to see on osirix)
+dir_files_vessels_Image3=strcat('C:\Users\Terrencewong\Desktop\Skel\', 'Image3');
+mkdir(dir_files_vessels_Image3);
+str_pat_vessels_Image3 =strcat('Carcinomix', 'Image3');
+PTKSaveImageAsDicom(PTKImage3, dir_files_vessels_Image3, 'Image', str_pat_vessels_Image3, false, reporting);
 %%
 %save original image for comparison to the skel 
 dir_files_vessels_orig=strcat('C:\Users\Terrencewong\Desktop\Skel\', 'orig');
