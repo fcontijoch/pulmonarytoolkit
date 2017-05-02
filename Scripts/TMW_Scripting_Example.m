@@ -168,26 +168,26 @@ fprintf('cache removed \n')
 %%
 %https://www.mathworks.com/matlabcentral/fileexchange/43400-skeleton3d
 %need to change to binary image 
-%%
+%% gather data 
 global dil_rad
 dil_rad = 15;
 vessels=dataset.GetResult('PTKVesselness');
 vessels_raw=vessels.RawImage;
 
-%%
+%% saving data so you dont have to run the entire PTKVesselness again
 vessels_bin=vessels_raw>0; 
 
 skel=Skeleton3D(vessels_bin); 
 save 'vessels_info'
-%%
-Image3=skel*10000; 
+%% 
+Image3=skel*1000; 
 %increases the threshold of the image to be easily seen in osirix  
 PTKImage3=vessels.Copy; 
 PTKImage3.ChangeRawImage(Image3); 
 
 vessels_skel=vessels.Copy; 
 vessels_skel.ChangeRawImage(skel); 
-%% saving images 
+%% saving skeletonization images 
 %making directatory for the new skel images
 dir_files_vessels_skel=strcat('C:\Users\Terrencewong\Desktop\Skel\', 'skel');
 mkdir(dir_files_vessels_skel);
@@ -204,9 +204,47 @@ dir_files_vessels_orig=strcat('C:\Users\Terrencewong\Desktop\Skel\', 'orig');
 mkdir(dir_files_vessels_orig)
 str_pat_vessels_orig=strcat('Carcinomix', 'vessels');
 PTKSaveImageAsDicom(vessels, dir_files_vessels_orig, 'vessels_orig', str_pat_vessels_orig, false, reporting);
-%%
-vessels=dataset.GetResult('PTKVesselness'); 
-vesselsraw=vessels.RawImage;
+
+
+%% zhennong's matlab code for bifurcations 
+%find all centreline points & classification of starting pixels, normal
+%pixels and bifuration 
+
+[x,y,z]=ind2sub(size(skel), find(skel==1)); 
+clear neigh_count starting_pixel bifur_pixel 
+normal_pixel=[];bifur_pixel=[];starting_pixel=[]; 
+for ;=1:(size(x,1) 
+    neigh_count=0;neigh_posit=[]; 
+    for i=-1:1
+        for j=-1:1
+            for k=-1:1
+                if z(l)==1 && k==-1 
+                    neigh_val=0 
+                elseif z(l)==size(z,1) && k==1; 
+                    neigh_val=0; 
+                
+                else 
+                    neigh=[x(l)+i,y(l)+j,z(l)+k];
+                    neigh_val=skel(neigh(1),neigh(2), neigh(3)); 
+                end; 
+                if neigh_val==1
+                    neigh_count=neigh_count+1; 
+                    %neigh_posit=[neigh_posit;neigh]; 
+                end 
+            end
+        end
+    end
+    if neigh_count==3
+        normal_pixel=[normal_pixel;x(l),y(l),z(l)]; 
+    elseif neigh_count==4
+        bifur_pixel=[bifur_pixel; x(l), y(l), z(l)]
+    else 
+        starting_pixel=[starting_pixel; x(l), y(l), z(l)];
+    end
+end
+
+           
+
 %% using the TestSkeleton3D 
 skel = Skeleton3D(vessels_raw);
 
