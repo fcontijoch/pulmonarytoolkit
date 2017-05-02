@@ -1,4 +1,9 @@
-clc; clear;
+function Roshni_Main(fldr)
+
+cd fldr
+fldInfo = dir;
+source_names = {fldInfo(:).name};
+path_names = {fldInfo(:).folder};
 
 %% Load Patient Datasets
 source_names = {'BPA_0003','BPA201701','cteph008'};
@@ -12,7 +17,7 @@ timeArray = {}; lungArray = {}; vesselArray = {};
 % Get parameters for each patient dataset and save them
 for i=1:numel(source_names)
 
-    for j= [0, 5, 10, 15]
+    for j= [15]
         [lungs_dilated,vessels_dilated,elapsedTime] = UCSD_ScriptingEx_Roshni(source_names{i},path_names{i}, j);
 
         timeArray{end+1} = elapsedTime;
@@ -26,3 +31,5 @@ for i=1:numel(source_names)
     
     timeArray = {}; lungArray = {}; vesselArray = {};
 end
+end
+
