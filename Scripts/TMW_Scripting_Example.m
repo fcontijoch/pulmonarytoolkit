@@ -179,8 +179,30 @@ vessels_bin=vessels_raw>0;
 
 skel=Skeleton3D(vessels_bin); 
 save 'vessels_info'
-%% 
+
+%% overlays skeletonization overe the original image
+figure();
+col=[.7 .7 .8];
+hiso = patch(isosurface(vessels_bin,0),'FaceColor',col,'EdgeColor','none');
+hiso2 = patch(isocaps(vessels_bin,0),'FaceColor',col,'EdgeColor','none');
+axis equal;axis off;
+lighting phong;
+isonormals(vessels_bin,hiso);
+alpha(0.5);
+set(gca,'DataAspectRatio',[1 1 1])
+camlight;
+hold on;
+w=size(skel,1);
+l=size(skel,2);
+h=size(skel,3);
+[x,y,z]=ind2sub([w,l,h],find(skel(:)));
+plot3(y,x,z,'square','Markersize',4,'MarkerFaceColor','r','Color','r');            
+set(gcf,'Color','white');
+view(100,80)
+%% trying to remove extras 
 Image3=skel*1000; 
+Image4=bwconncmp(Image3); 
+
 %increases the threshold of the image to be easily seen in osirix  
 PTKImage3=vessels.Copy; 
 PTKImage3.ChangeRawImage(Image3); 
@@ -198,6 +220,7 @@ dir_files_vessels_Image3=strcat('C:\Users\Terrencewong\Desktop\Skel\', 'Image3')
 mkdir(dir_files_vessels_Image3);
 str_pat_vessels_Image3 =strcat('Carcinomix', 'Image3');
 PTKSaveImageAsDicom(PTKImage3, dir_files_vessels_Image3, 'Image', str_pat_vessels_Image3, false, reporting);
+
 %%
 %save original image for comparison to the skel 
 dir_files_vessels_orig=strcat('C:\Users\Terrencewong\Desktop\Skel\', 'orig');
@@ -209,11 +232,11 @@ PTKSaveImageAsDicom(vessels, dir_files_vessels_orig, 'vessels_orig', str_pat_ves
 %% zhennong's matlab code for bifurcations 
 %find all centreline points & classification of starting pixels, normal
 %pixels and bifuration 
-
+%skel is the skeletonization output 
 [x,y,z]=ind2sub(size(skel), find(skel==1)); 
 clear neigh_count starting_pixel bifur_pixel 
 normal_pixel=[];bifur_pixel=[];starting_pixel=[]; 
-for ;=1:(size(x,1) 
+for l=1:size(x,1)
     neigh_count=0;neigh_posit=[]; 
     for i=-1:1
         for j=-1:1
@@ -241,28 +264,11 @@ for ;=1:(size(x,1)
     else 
         starting_pixel=[starting_pixel; x(l), y(l), z(l)];
     end
-end
+end;
+%% graph for bifurcations
 
-           
+figure; hold all; 
+plot3(normal_pixel(:,1), normal_pixel(:,2), normal_pixel(:,3), '.b', 'MarkerSize' 24); 
+plot3(bifur_pixel(:,1), bifur_pixel(:,2), bifur_pixel(:,3), '.r', 'MarkerSize', 24); 
+plot3(starting_pixel(:,1), starting_pixel(:,2), starting_pixel(:,3), '.m' 'MarkerSize', 24); 
 
-%% using the TestSkeleton3D 
-skel = Skeleton3D(vessels_raw);
-
-figure();
-col=[.7 .7 .8];
-hiso = patch(isosurface(vessels_raw,0),'FaceColor',col,'EdgeColor','none');
-hiso2 = patch(isocaps(vessels_raw,0),'FaceColor',col,'EdgeColor','none');
-axis equal;axis off;
-lighting phong;
-isonormals(vessels_raw,hiso);
-alpha(0.5);
-set(gca,'DataAspectRatio',[1 1 1])
-camlight;
-hold on;
-w=size(skel,1);
-l=size(skel,2);
-h=size(skel,3);
-[x,y,z]=ind2sub([w,l,h],find(skel(:)));
-plot3(y,x,z,'square','Markersize',4,'MarkerFaceColor','r','Color','r');            
-set(gcf,'Color','white');
-view(140,80)
