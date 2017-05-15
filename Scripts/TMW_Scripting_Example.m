@@ -176,11 +176,39 @@ vessels_raw=vessels.RawImage;
 
 %% saving data so you dont have to run the entire PTKVesselness again
 vessels_bin=vessels_raw>0; 
+%increase intensity to see in osirix 
+ 
 
 skel=Skeleton3D(vessels_bin); 
 save 'vessels_info'
 
-%% overlays skeletonization overe the original image
+
+%% reducing noise using area opening 
+%%bwareaopen(image, P,conn)
+%image= binary image, P= objects with less than P pixels are removed,
+%conn = default connectivity 8 for 2D and 26 for 3D. 
+x=[];
+for i =1:21
+    x=linspace(0,200,21);
+    noise=bwareaopen(skel, x(i)); 
+    figure(1) 
+    f1=imagesc(noise(:,:,100));
+    saveas(f1,['noise' num2str(x(i)) '.png']);
+    
+end 
+
+%% trial with visualization using 100 pixel removal 
+skel3=bwareaopen(skel,100); 
+imagesc(skel3(:,:,100))
+PTKImage3=vessels.Copy; 
+PTKImage3.ChangeRawImage(skel3); 
+PTKViewer(PTKImage3) 
+OGImage=vessels.Copy; 
+OGImage.ChangeRawImage(skel); 
+PTKViewer(OGImage)
+
+
+%% o2verlays skeletonization overe the original image
 figure();
 col=[.7 .7 .8];
 hiso = patch(isosurface(vessels_bin,0),'FaceColor',col,'EdgeColor','none');
