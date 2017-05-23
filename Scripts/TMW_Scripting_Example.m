@@ -181,7 +181,25 @@ vessels_bin=vessels_raw>0;
 
 skel=Skeleton3D(vessels_bin); 
 save 'vessels_info'
+%% trying to make hhistogram of connectivity 
+info=bwconncomp(skel)
+%regionprops returns measurements based on the area of the pixels found in
+%the bwconncomp which finds out information about the image such as
+%connectivity and area 
+S=regionprops(info, 'Area')
 
+figure(10)
+hist(info.ImageSize)
+noiseOG=skel
+noise1=bwareaopen(skel, 240)
+figure(1) 
+pic1=imagesc(noiseOG(:,:,100))
+figure(2)
+pic2=imagesc(noise1(:,:,100))
+
+
+
+%imhist(vessels_bin)
 
 %% reducing noise using area opening 
 %%bwareaopen(image, P,conn)
