@@ -186,16 +186,49 @@ info=bwconncomp(skel)
 %regionprops returns measurements based on the area of the pixels found in
 %the bwconncomp which finds out information about the image such as
 %connectivity and area 
-S=regionprops(info, 'Area')
 
-figure(10)
-hist(info.ImageSize)
-noiseOG=skel
-noise1=bwareaopen(skel, 240)
-figure(1) 
-pic1=imagesc(noiseOG(:,:,100))
-figure(2)
-pic2=imagesc(noise1(:,:,100))
+numPixels = cellfun(@numel,info.PixelIdxList);
+h = histogram(numPixels,100);
+h.BinEdges = 0:40;
+[counts, binEdges] = histcounts(numPixels,0:40);
+
+noise = find(counts>200); pixels_index = [];
+for n=1:numel(noise)
+    lowerBound = binEdges(noise);
+    upperBound = binEdges(noise+1);
+    
+    for m=1:numel(numPixels)
+        if (numPixels(m)>=lowerBound &&numPixels(m)<=upperBound)
+            pixels_index = [pixels_index m];
+        end
+    end
+end
+
+skel2 = skel;
+noiseArray = info.PixelIdxList(pixels_index);
+
+for l=1:numel(noiseArray)
+    temp = noiseArray{l}
+    for j=1:numel(temp)
+      skel2(temp)= 0;
+    end
+end
+
+
+%check
+info2 =bwconncomp(skel2);
+%numPixels2 = cellfun(@numel,info2.PixelIdxList);
+
+% S=regionprops(info, 'Area')
+% 
+% figure(10)
+% hist(info.ImageSize)
+% noiseOG=skel
+% noise1=bwareaopen(skel, 240)
+% figure(1) 
+% pic1=imagesc(noiseOG(:,:,100))
+% figure(2)
+% pic2=imagesc(noise1(:,:,100))
 
 
 
@@ -313,8 +346,8 @@ for l=1:size(x,1)
 end;
 %% graph for bifurcations
 
-figure; hold all; 
-plot3(normal_pixel(:,1), normal_pixel(:,2), normal_pixel(:,3), '.b', 'MarkerSize' 24); 
-plot3(bifur_pixel(:,1), bifur_pixel(:,2), bifur_pixel(:,3), '.r', 'MarkerSize', 24); 
-plot3(starting_pixel(:,1), starting_pixel(:,2), starting_pixel(:,3), '.m' 'MarkerSize', 24); 
-
+% figure; hold all; 
+% plot3(normal_pixel(:,1), normal_pixel(:,2), normal_pixel(:,3), '.b', 'MarkerSize' 24); 
+% plot3(bifur_pixel(:,1), bifur_pixel(:,2), bifur_pixel(:,3), '.r', 'MarkerSize', 24); 
+% plot3(starting_pixel(:,1), starting_pixel(:,2), starting_pixel(:,3), '.m' 'MarkerSize', 24); 
+% 
